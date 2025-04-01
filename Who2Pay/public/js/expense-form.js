@@ -1,9 +1,8 @@
-// Sample list of people - replace with your own data
+// Sample list of people
 const people = ["John Doe", "Mary Jane", "Gary Stu", "Bjarne Stroustrup"];
 
-// Initial sample values (for demonstration)
-const payeeAmountsPaid = [0.00, 0.00, 0.00, 0.00];
-const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00];
+const payeeAmountsPaid = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts paid by each payee
+const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts to be paid by each payer
 
 // Function to calculate the final total
 function calculateTotal() {
@@ -38,12 +37,14 @@ function updatePayeeAmounts() {
 				
 				if (checkbox.checked) {
 					amountElement.textContent = `$${amountPerPayee.toFixed(2)}`;
+					payeeAmountsPaid[index] = amountPerPayee; // Update the payee amounts array
 				} else {
 					amountElement.textContent = '\$0.00';
+					payeeAmountsPaid[index] = 0.00; // Update the payee amounts array
 				}
 			});
 		}
-	}
+	} 
 }
 
 // Function to validate the form
@@ -158,12 +159,14 @@ function updatePayerAmounts() {
 				
 				if (checkbox.checked) {
 					amountElement.textContent = `$${amountPerPayer.toFixed(2)}`;
+					payerAmountsToPay[index] = amountPerPayer; // Update the payer amounts array
 				} else {
 					amountElement.textContent = '\$0.00';
+					payerAmountsToPay[index] = 0.00; // Update the payer amounts array
 				}
 			});
 		}
-	}
+	} 
 	
 	// Validate the form
 	validateForm();
@@ -192,7 +195,10 @@ function populatePayees() {
 			`;
 		} else { // Custom Amounts
 			row.innerHTML = `
-				<div class="person-name">${person}</div>
+				<div class="payee-info">
+					<div class="person-name">${person}</div>
+					<div class="payee-amount-display" data-index="${index}">\$0.00</div>
+				</div>
 				<div class="person-amount">
 					<span class="currency">$</span>
 					<input type="text" class="payee-amount" data-index="${index}" value="${payeeAmountsPaid[index].toFixed(2)}">
@@ -218,6 +224,14 @@ function populatePayees() {
 	} else {
 		document.querySelectorAll('.payee-amount').forEach(input => {
 			input.addEventListener('input', function() {
+				// Custom amounts logic
+				const index = input.dataset.index;
+				const amount = parseFloat(input.value) || 0;
+				payeeAmountsPaid[index] = amount; // Update the payee amounts array
+				
+				const amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
+				amountElement.textContent = `$${amount.toFixed(2)}`;
+
 				// Handle amount changes
 				validateForm();
 			});
@@ -286,6 +300,8 @@ function populatePayers() {
 				// Update the displayed amount
 				const index = input.dataset.index;
 				const amount = parseFloat(input.value) || 0;
+				payerAmountsToPay[index] = amount; // Update the payer amounts array
+				
 				const amountDisplay = document.querySelector(`.payer-amount[data-index="${index}"]`);
 				amountDisplay.textContent = `$${amount.toFixed(2)}`;
 				
@@ -302,6 +318,16 @@ function populatePayers() {
 	validateForm();
 }
 
+function saveExpense() {
+	// Save button logic here
+	// Compute the transaction details using 
+	// the values in the arrays "payeeAmountsPaid" and "payerAmountsToPay"
+	if(!saveButton.disabled)
+		console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
+	else
+		console.log("saveExpense called but button is not enabled");
+}
+
 // Event listeners for amount fields
 document.getElementById('subtotal').addEventListener('input', calculateTotal);
 document.getElementById('additionalCharge').addEventListener('input', calculateTotal);
@@ -312,6 +338,9 @@ document.getElementById('expenseName').addEventListener('input', validateForm);
 // Event listeners for split method changes
 document.getElementById('payeeSplitMethod').addEventListener('change', populatePayees);
 document.getElementById('payerSplitMethod').addEventListener('change', populatePayers);
+
+// Event listener for save button
+document.getElementById('saveButton').addEventListener('pointerdown', saveExpense);
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
