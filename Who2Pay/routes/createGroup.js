@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const db = require('../config/dbGroup');
+const dbUsers = require('../config/dbUsers'); // Assuming you have a separate db connection for groups
 
 // table name is groups_table
 const router = express.Router();
@@ -43,13 +44,20 @@ router.post('/register', async (req, res) => {
         'INSERT INTO groups_table (group_name, group_password, password_enforced) VALUES (?, ?, ?)',
         [groupName, hashedPassword, passwordRequired]
         );
+        // get group id (id from the groups_table)
+        const [groupId] = await db.query(
+            'SELECT id FROM groups_table WHERE group_name = ?',
+            groupName
+        );
+        // parse groupId
+        const parsedGroupId = groupId[0].id;
         // @TODO: Add members to the user_profiles table
-        // for (const member of parsedMembers) {
-        //     await db.query(
-        //         'INSERT INTO user_profiles (group_name, member_name) VALUES (?, ?)',
-        //         [groupName, member.name]
-        //     );
-        // } // password will not be inlcuded, initially, set by users
+        for (const member of parsedMembers) {
+            await dbUsers.query(
+                'INSERT INTO user_profiles (group_id, name, owner) VALUES (?, ?, ?)',
+                [parsedGroupId, member.name, false]
+            );
+        } // password will not be inlcuded, initially, set by users
         
         res.status(201).json({ message: 'Group registered successfully' });
     } catch (error) {
