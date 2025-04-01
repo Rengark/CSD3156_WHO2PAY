@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Group</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Create Group</h1>
+    <p>Already have a group? <a href="/login.html">Log in</a></p>
+    <form id="create-group-form">
+      <div class="form-group">
+        <label for="group-name">Group Name</label>
+        <input type="text" id="group-name" name="Group Name" required>
+      </div>
+      <div class="form-group">
+        <label for="group-password">Group Password</label>
+        <input type="password" id="group-password" name="group-password" required>
+      </div>
+      <h3>Members</h3>
+      <div class="form-group" style="display: flex; align-items: center; gap: 0px; flex-wrap: nowrap;">
+        <input type="checkbox" id="member-password" name="member-password" value="Members should make passwords">
+        <label for="member-password" style="margin: 0; white-space: nowrap;">Members should make passwords</label>
+      </div>
+      <div class="form-group">
+        <label style="font-style: italic; font-size: smaller;">Note: The group owner will need a password even if the other members do not.</label>
+      </div>
+
+      <div class="form-group">
+          <table id="members-table" border="1" style="width: 100%; border-collapse: collapse;">
+            <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+          <tbody>
+            <!-- Rows will be dynamically added here -->
+          </tbody>
+          </table>
+          <div style="margin-top: 10px;"></div>
+          <input type="text" id="member-name" placeholder="Member Name">
+          <button type="button" id="add-member-btn">Add Member</button>
+      </div>
+
+      <div>
+        <script src="/js/table.js"></script>
+      </div>
+
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+        <button type="submit" disabled>Back</button>
+        <button type="submit">Next Step</button>
+      </div>
+    </form>
+    <div id="message"></div>
+  </div>
+  <script src="/js/createGroup.js"></script>
+</body>
+</html>
