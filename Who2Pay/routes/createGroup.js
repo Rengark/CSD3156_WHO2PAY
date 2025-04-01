@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
         );
         // parse groupId
         const parsedGroupId = groupId[0].id;
-        // @TODO: Add members to the user_profiles table
+        // add members to the profiles table
         for (const member of parsedMembers) {
             await dbUsers.query(
                 'INSERT INTO user_profiles (group_id, name, owner) VALUES (?, ?, ?)',
