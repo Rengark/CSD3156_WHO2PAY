@@ -48,9 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // not used
     async function checkGroupStatus() {
         try {
-            const response = await fetch('/createGroup/status');
+            const response = await fetch('/createGroup/status'); // not implemented yet
             const data = await response.json();
             
             if (data.hasGroup) {
