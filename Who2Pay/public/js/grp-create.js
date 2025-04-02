@@ -6,7 +6,7 @@ function showAddMemberInput() {
     const container = document.getElementById("addMemberContainer");
     container.innerHTML = `
         <input type="text" id="newMemberName" placeholder="Enter member name">
-        <button id="confirmMember">Confirm</button>
+        <button id="confirmMember" class="green btn" style = "margin-top: 5px;">Confirm</button>
     `;
     document.getElementById('confirmMember').addEventListener('pointerdown', confirmMember);
     document.getElementById("add").style.visibility = 'hidden';
@@ -18,6 +18,7 @@ function confirmMember() {
     if (name && !members.some(item => item.toLowerCase() == name.toLowerCase())) {
         members.push(name);
         updateMemberList();
+        document.getElementById("grpwarning").style.visibility = 'hidden';
     }
     document.getElementById("addMemberContainer").innerHTML = ""; // Clear input field
     document.getElementById("add").style.visibility = 'visible';
@@ -49,11 +50,18 @@ function removeMember(index) {
 }
 
 function togglePassword() {
-    const passwordField = document.getElementById("groupPassword");
-    passwordField.type = passwordField.type === "password" ? "text" : "password";
+    const passwordField = document.getElementsByClassName("groupPassword");
+    //loop all password fieldds
+    for (let i = 0; i < passwordField.length; i++) {
+        passwordField[i].type = passwordField[i].type === "password" ? "text" : "password";
+    }
     //change icon from 🐵 to 🙈
-    const passbuttontext = document.getElementById("eyeToggle");
-    passbuttontext.innerText = passwordField.type === "password" ? "🙈" : "🐵";
+    const passbuttontext = document.getElementsByClassName("eyeToggle");
+    //loop all password fieldds
+    for (let i = 0; i < passbuttontext.length; i++) {
+        passbuttontext[i].innerText = passwordField[i].type === "password" ? "🙈" : "🐵";
+    }
+
 }
 
 // Event listener for save button
@@ -61,6 +69,7 @@ function togglePassword() {
 
 function switchToGroupOwnerUI() {
     if(members.length === 0) {
+        document.getElementById("grpwarning").style.visibility = 'visible';
         return;
     }
 

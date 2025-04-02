@@ -39,6 +39,10 @@
         <div class="add-member-container" id="addMemberContainer"></div>
         <button class="btn add" id="add">Add Members</button>
 
+        <div class ="space warning" id = "grpwarning" style="visibility: hidden;">
+        <label>You must atleast have 1 member in the group</label>
+        </div>
+
         <div class="buttons">
             <button class="btn" id ="backtocreate">Back</button>
             <button class="btn green" id = "nxtstep">Next Step</button>
@@ -50,18 +54,22 @@
         <h2>Set Group Owner</h2>
         <p>Forgot to add your name? <a href="#" class="backtocg">Go back</a></p>
 
-        <label>Owner Name</label>
-        <select id="ownerName"></select>
-        <label>Owner Password</label>
-        <div class="password-container">
-            <input type="password" class="groupPassword" placeholder="Password">
-            <span class = "eyeToggle">🙈</span>
+        <div class="input-group">
+            <label>Owner Name</label>
+            <select id="ownerName"></select>
         </div>
 
+        <div class="input-group">
+            <label>Owner Password</label>
+            <div class="password-container">
+                <input type="password" class="groupPassword" placeholder="Password">
+                <span class = "eyeToggle">🙈</span>
+            </div>
+        </div>
         <p><i>Note: Group ownership cannot be transferred later.</i></p>
 
-        <button class="backtocg">Back</button>
-        <button id="create">Create Group</button>
+        <button class="backtocg btn">Back</button>
+        <button id="create" class = "btn green">Create Group</button>
     </div>
 
         <script src="/js/grp-create.js"></script>
