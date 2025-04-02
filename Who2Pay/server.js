@@ -44,7 +44,7 @@ app.use('/auth', authRoutes);
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'expense-create.html'));
 });
 
 // Protected route example
