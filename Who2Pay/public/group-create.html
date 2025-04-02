@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style-grp-create.css">
 </head>
 <body>
-    <div class="container">
+    <div id="createGroupUI" class="container">
         <h2>Create Group</h2>
         <p>Already have a group? <a href="#">Log in</a></p>
 
@@ -19,8 +19,8 @@
         <div class="input-group">
             <label>Group Password</label>
             <div class="password-container">
-                <input type="password" id="groupPassword" placeholder="Password">
-                <span class="toggle" id = "eyeToggle">🙈</span>
+                <input type="password" class="groupPassword" placeholder="Password">
+                <span class = "eyeToggle">🙈</span>
             </div>
         </div>
 
@@ -37,13 +37,33 @@
         </div>
 
         <div class="add-member-container" id="addMemberContainer"></div>
-        <button class="btn add" id="add">+</button>
+        <button class="btn add" id="add">Add Members</button>
 
         <div class="buttons">
-            <button class="btn">Back</button>
-            <button class="btn green">Next Step</button>
+            <button class="btn" id ="backtocreate">Back</button>
+            <button class="btn green" id = "nxtstep">Next Step</button>
         </div>
     </div>
+
+     <!-- Set Group Owner UI -->
+     <div id="groupOwnerUI" class="container" style="display: none;">
+        <h2>Set Group Owner</h2>
+        <p>Forgot to add your name? <a href="#" class="backtocg">Go back</a></p>
+
+        <label>Owner Name</label>
+        <select id="ownerName"></select>
+        <label>Owner Password</label>
+        <div class="password-container">
+            <input type="password" class="groupPassword" placeholder="Password">
+            <span class = "eyeToggle">🙈</span>
+        </div>
+
+        <p><i>Note: Group ownership cannot be transferred later.</i></p>
+
+        <button class="backtocg">Back</button>
+        <button id="create">Create Group</button>
+    </div>
+
         <script src="/js/grp-create.js"></script>
 </body>
 </html>
