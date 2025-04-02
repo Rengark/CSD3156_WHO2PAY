@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Create Group</h2>
+        <p>Already have a group? <a href="#">Log in</a></p>
+
+        <div class="input-group">
+            <label>Group Name</label>
+            <input type="text" placeholder="Group Name">
+        </div>
+
+        <div class="input-group">
+            <label>Group Password</label>
+            <div class="password-container">
+                <input type="password" id="groupPassword" placeholder="Password">
+                <span class="toggle" id = "eyeToggle">🙈</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Members</label>
+            <div>
+                <input type="checkbox" checked> Members should make passwords
+            </div>
+            <small>Note: The group owner will need a password even if the other members don’t</small>
+        </div>
+
+        <div class="members-container" id="membersList">
+            <!-- Members will be added here dynamically -->
+        </div>
+
+        <div class="add-member-container" id="addMemberContainer"></div>
+        <button class="btn add" id="add">+</button>
+
+        <div class="buttons">
+            <button class="btn">Back</button>
+            <button class="btn green">Next Step</button>
+        </div>
+    </div>
+        <script src="/js/grp-create.js"></script>
+</body>
+</html>
