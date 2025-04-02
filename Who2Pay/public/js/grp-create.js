@@ -18,7 +18,7 @@ function confirmMember() {
     if (name && !members.some(item => item.toLowerCase() == name.toLowerCase())) {
         members.push(name);
         updateMemberList();
-        document.getElementById("grpwarning").style.visibility = 'hidden';
+        document.getElementById("grpwarning").style.display = 'none';
     }
     document.getElementById("addMemberContainer").innerHTML = ""; // Clear input field
     document.getElementById("add").style.visibility = 'visible';
@@ -50,7 +50,7 @@ function removeMember(index) {
 }
 
 function togglePassword() {
-    const passwordField = document.getElementsByClassName("groupPassword");
+    const passwordField = document.getElementsByClassName("pswd");
     //loop all password fieldds
     for (let i = 0; i < passwordField.length; i++) {
         passwordField[i].type = passwordField[i].type === "password" ? "text" : "password";
@@ -69,7 +69,7 @@ function togglePassword() {
 
 function switchToGroupOwnerUI() {
     if(members.length === 0) {
-        document.getElementById("grpwarning").style.visibility = 'visible';
+        document.getElementById("grpwarning").style.display = "block";
         return;
     }
 
@@ -78,6 +78,12 @@ function switchToGroupOwnerUI() {
     
     const nameDropdown = document.getElementById("ownerName");
     nameDropdown.innerHTML = "";
+
+    const d = document.createElement("option");
+    d.value = "none";
+    d.textContent = "Select a user";
+    nameDropdown.appendChild(d);
+
     members.forEach(member => {
         const option = document.createElement("option");
         option.value = member;
@@ -91,15 +97,46 @@ function goBackToCreateGroup() {
     document.getElementById("createGroupUI").style.display = "block";
 }
 
-document.getElementById('nxtstep').addEventListener('pointerdown', switchToGroupOwnerUI);
-var btcg = document.getElementsByClassName('backtocg');
-for (let i = 0; i < btcg.length; i++) {
-    btcg[i].addEventListener('pointerdown', goBackToCreateGroup);
+
+
+var nxtstep = document.getElementById('nxtstep')
+if (nxtstep) {
+    nxtstep.addEventListener('pointerdown', switchToGroupOwnerUI);
 }
 
-document.getElementById('add').addEventListener('pointerdown', showAddMemberInput);
+
+var btcg = document.getElementsByClassName('backtocg');
+if(btcg.length > 0) {
+    for (let i = 0; i < btcg.length; i++) {
+        btcg[i].addEventListener('pointerdown', goBackToCreateGroup);
+    }
+}
+
+
+const addButton = document.getElementById('add');
+if (addButton) {
+    addButton.addEventListener('pointerdown', showAddMemberInput);
+}
 
 var et = document.getElementsByClassName('eyeToggle');
-for (let i = 0; i < et.length; i++) {
-    et[i].addEventListener('pointerdown', togglePassword);
+if(et.length > 0) {
+    for (let i = 0; i < et.length; i++) {
+        et[i].addEventListener('pointerdown', togglePassword);
+    }
+}
+
+function createGroup()
+{
+    //check if a name is chosen, cannot be value none
+
+    //check if a password is set
+
+
+    //set owner to whatever was in the dropdown
+    const nameDropdown = document.getElementById("ownerName");
+    owner = nameDropdown.options[nameDropdown.selectedIndex].value;
+    const ownerpassword = document.getElementById("ownerPassword").value.trim();
+
+    const groupName = document.getElementById("groupName").value.trim();
+    const groupPassword = document.getElementById("groupPassword").value.trim();
 }

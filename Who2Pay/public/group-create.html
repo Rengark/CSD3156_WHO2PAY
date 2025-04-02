@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="createGroupUI" class="container">
-        <h2>Create Group</h2>
+        <h1>Create Group</h1>
         <p>Already have a group? <a href="#">Log in</a></p>
 
         <div class="input-group">
@@ -19,7 +19,7 @@
         <div class="input-group">
             <label>Group Password</label>
             <div class="password-container">
-                <input type="password" class="groupPassword" placeholder="Password">
+                <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
                 <span class = "eyeToggle">🙈</span>
             </div>
         </div>
@@ -39,9 +39,7 @@
         <div class="add-member-container" id="addMemberContainer"></div>
         <button class="btn add" id="add">Add Members</button>
 
-        <div class ="space warning" id = "grpwarning" style="visibility: hidden;">
-        <label>You must atleast have 1 member in the group</label>
-        </div>
+        <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
 
         <div class="buttons">
             <button class="btn" id ="backtocreate">Back</button>
@@ -51,7 +49,7 @@
 
      <!-- Set Group Owner UI -->
      <div id="groupOwnerUI" class="container" style="display: none;">
-        <h2>Set Group Owner</h2>
+        <h1>Set Group Owner</h1>
         <p>Forgot to add your name? <a href="#" class="backtocg">Go back</a></p>
 
         <div class="input-group">
@@ -62,10 +60,11 @@
         <div class="input-group">
             <label>Owner Password</label>
             <div class="password-container">
-                <input type="password" class="groupPassword" placeholder="Password">
+                <input type="password" class="pswd" placeholder="Password">
                 <span class = "eyeToggle">🙈</span>
             </div>
         </div>
+        <div></div>
         <p><i>Note: Group ownership cannot be transferred later.</i></p>
 
         <button class="backtocg btn">Back</button>
