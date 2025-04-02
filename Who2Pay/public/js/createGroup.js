@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     messageDiv.textContent = data.message;
                     messageDiv.className = 'success';
-                    // Redirect to dashboard after successful group creation
+                    // Redirect to registration page after successful group creation
                     setTimeout(() => {
                         window.location.href = '/register.html';
                     }, 2000);
@@ -47,6 +47,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // check if owner has created an account
+    const ownerForm = document.getElementById('register-form');
+    if (ownerForm) 
+    {
+        ownerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const messageDiv = document.getElementById('message');
+            
+            try {
+                const response = await fetch('/createGroup/registerOwner', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                if (response.ok)
+                {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'success';
+                    // Redirect to dashboard after successful group creation
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 2000);
+                } else 
+                {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'error';
+                }
+            }
+            catch (error) {
+                messageDiv.textContent = 'An error occurred. Please try again.';
+                messageDiv.className = 'error';
+            }
+    });
+    }
+    
 
     // not used
     async function checkGroupStatus() {
