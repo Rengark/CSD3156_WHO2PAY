@@ -326,6 +326,50 @@ function saveExpense() {
 		console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
 	else
 		console.log("saveExpense called but button is not enabled");
+
+	// get form data
+	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
+	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
+	const payerSplitMethod = document.getElementById('payerSplitMethod').value;
+
+	// use test group id for now
+	const testGroupId = 1;
+
+	// create transaction object for this expense
+	const transactionData = {
+		groupId: testGroupId,
+		splitType: `${payeeSplitMethod}/${payerSplitMethod}`,
+		totalAmount: finalTotal
+	}
+
+	// create transactionDetails
+	const transactionDetails = [];
+
+	payeeAmountsPaid.forEach((amount, index) => {
+		// only include payees with amount > 0
+		if(amount > 0) {
+			transactionDetails.push({
+				payerId: null, // participants don't pay
+				participantId: index,
+				amount: amount
+			});
+		}
+	});
+
+	payerAmountsToPay.forEach((amount, index) => {
+		if(amount > 0) {
+			transactionDetails.push({
+				payerId: index,
+				participantId: null,
+				amount: amount
+			})
+		}
+	});
+
+	console.log("Transaction data to be saved:", {
+		transactionData: transactionData,
+		transactionDetails: transactionDetails
+	})
 }
 
 // Event listeners for amount fields
