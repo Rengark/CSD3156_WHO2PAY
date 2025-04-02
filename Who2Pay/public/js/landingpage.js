@@ -1,4 +1,6 @@
 let members = ["John Doe", "Jane Smith", "Alice Johnson"]; // Example members array
+let firsttimeusers = [true, false, true]; // Example firsttimeusers array
+let grpowner = "John Doe"; // Example group owner
 let grpname = "test";
 
 
@@ -108,14 +110,55 @@ function ChangeToMemberLoginUI()
 function showPasswordField() {
     const selectedValue = document.getElementById("userName").value;
     const passwordField = document.getElementById("memberPasswordContainer");
+    const newUserPasswordField = document.getElementById("newMemberPasswordContainer");
     if (selectedValue !== "none") {
-        passwordField.style.display = "block";
+        checkFirstTimeUser(selectedValue);
     } else {
         passwordField.style.display = "none";
+        newUserPasswordField.style.display = "none";
     }
 }
+
+function checkFirstTimeUser()
+{
+    //use db to check but we have sample array for now
+    //the order of the boolean array corresponds to the user
+    //in the members array
+    const selectedValue = document.getElementById("userName").value;
+    const index = members.indexOf(selectedValue);
+    const isFirstTimeUser = firsttimeusers[index];
+    const passwordField = document.getElementById("memberPasswordContainer");
+    const newUserPasswordField = document.getElementById("newMemberPasswordContainer");
+
+    if (isFirstTimeUser) {
+        passwordField.style.display = "none";
+        newUserPasswordField.style.display = "block";
+    } else {
+        passwordField.style.display = "block";
+        newUserPasswordField.style.display = "none";
+    }
+}
+
+function backToLandingPage()
+{
+    //go back to landing page
+    document.getElementById("memberloginUI").style.display = "none";
+    document.getElementById("joingroupUI").style.display = "block";
+
+    //reset passwordblocks
+    const passwordField = document.getElementById("memberPasswordContainer");
+    const newUserPasswordField = document.getElementById("newMemberPasswordContainer");
+    passwordField.style.display = "none";
+    newUserPasswordField.style.display = "none";
+}
+
 
 var dropdown = document.getElementById("userName");
 if (dropdown) {
     dropdown.addEventListener("change", showPasswordField);
+}
+
+var backbtn = document.getElementById('backtofg')
+if (backbtn) {
+    backbtn.addEventListener('pointerdown', backToLandingPage);
 }
