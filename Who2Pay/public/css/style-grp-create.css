@@ -80,14 +80,26 @@ input[type="checkbox"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+        background-color: #adadad;
+        color: white;
+    }
 }
 .btn.add {
     background-color: #a8dadc;
     margin-top: 5px;
+    &:hover {
+        background-color: #87b4b6;
+    }
 }
 .btn.green {
     background-color: #1d7874;
     color: white;
+
+    &:hover {
+        background-color: #457b9d;
+    }
 }
 
 #ownerName, #userName{
@@ -114,3 +126,86 @@ div .space
     margin-top: 5px;
     font-weight: bold;
 }
+
+#deleteGroup
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff606e;
+    color: rgb(255, 255, 255);
+    border-color: black;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+}
+
+.confirm {
+    display: none;
+  
+    > div {
+      &:first-of-type {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        top: 0px;
+        left: 0px;
+      }
+  }
+  
+    
+   .test {
+        padding: 10px 20px;
+        background: white;
+        position: absolute;
+        width: auto;
+        height: auto;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+        border: 1px solid #333;
+  
+        div {
+          &:first-of-type {
+            min-width: 150px;
+            padding: 10px;
+          }
+  
+          &:last-of-type {
+            text-align: center;
+
+            input[type="button"]{
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+
+                color: white;
+                margin: 0 5px;
+                cursor: pointer;
+    
+              }
+          }
+
+        }
+
+        #confirmYes {
+            background-color: #b9000f;
+
+            &:hover {
+                background-color: #c04651;
+            }
+        }
+
+        #confirmNo {
+            background-color: #1d7874;
+            &:hover {
+                background-color: #457b9d;
+            }
+        }
+    
+    }
+    }

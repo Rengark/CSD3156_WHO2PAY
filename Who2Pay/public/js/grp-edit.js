@@ -107,3 +107,89 @@ const addButton = document.getElementById('add');
 if (addButton) {
     addButton.addEventListener('pointerdown', showAddMemberInput);
 }
+
+
+function DeleteGroup()
+{
+
+}
+
+
+
+//add new members into database
+//check group name and group password if it changed, if it did update the database
+//@junwei
+function SaveGroupSettings()
+{
+    //get group name and password
+    const groupName = document.getElementById("groupName").value;
+    const groupPassword = document.getElementById("groupPassword").value;
+
+    //add new member list to db
+    newMembers;
+}
+
+const ui = {
+    confirm: async (message) => createConfirm(message)
+};
+
+const createConfirm = () => {
+    return new Promise((complete) => {
+
+        
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        const confirmBox = document.querySelector('.confirm');
+        
+        confirmYes.replaceWith(confirmYes.cloneNode(true));
+        confirmNo.replaceWith(confirmNo.cloneNode(true));
+        
+        document.getElementById('confirmYes').addEventListener('click', () => {
+            confirmBox.style.display = 'none';
+            complete(true);
+        });
+        
+        document.getElementById('confirmNo').addEventListener('click', () => {
+            confirmBox.style.display = 'none';
+            complete(false);
+        });
+        
+        confirmBox.style.display = 'block';
+    });
+};
+
+const save = async () => {
+    const confirm = await ui.confirm();
+    
+    if (confirm) {
+        alert('Group Deleted');
+
+        //go back to landingpage
+        window.location.href = "/landingpage";
+
+        //handle log out here @junwei
+
+        //delete group
+        DeleteGroup();
+    } else {
+    }
+};
+
+
+  
+const deleteButton = document.getElementById('deleteGroup');
+if (deleteButton) {
+    deleteButton.addEventListener('pointerdown', save);
+}
+
+
+function GoBack()
+{
+    //go back to expanse list
+    window.location.href = "/expanselist";
+}
+
+const backButton = document.getElementById('backbtn');
+if (backButton) {
+    backButton.addEventListener('pointerdown', GoBack);
+}

@@ -8,16 +8,18 @@
 </head>
 <body>
     <div id="createGroupUI" class="container">
-        <h1>Edit Group</h1>
         <form id="register-form">
+        <button class="btn" id ="deleteGroup" type = "delete">🗑️</button>
+        <h1>Edit Group</h1>
 
+    
             <div class="input-group">
-                <label for="group-name">Group Name</label>
+                <label for="groupName">Group Name</label>
                 <input type="text" id = "groupName" placeholder="Group Name">
             </div>
 
             <div class="input-group">
-                <label for="group-password">Group Password</label>
+                <label for="groupPassword">Group Password</label>
                 <div class="password-container">
                     <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
                     <span class = "eyeToggle">🙈</span>
@@ -34,14 +36,28 @@
 
             <div class="add-member-container" id="addMemberContainer"></div>
 
-            <button class="btn" id ="backtolist">Back</button>
             <button class="btn add" id="add">Add Members</button>
 
         <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
 
         <div class="buttons">
-            <button class="btn green" id = "save" value = "save">Save Group Settings</button>
+            <button class="btn" id ="backbtn" type = "back">Back</button>
+            <button class="btn green" id = "save" type = "save">Save Group Settings</button>
         </div>
+
+        <div class="confirm">
+            <div></div>
+            <div class = "test">
+              <div id="confirmMessage">Are you sure you want to delete the group?</div>
+                <p id="confirmWarning">This action cannot be undone.</p>
+              <div>
+                <input id="confirmYes" type="button" value="Yes" />
+                <input id="confirmNo" type="button" value="No" />
+              </div>
+            </div>
+          </div>
+
+
         </form>
     </div>
         <script src="/js/grp-edit.js"></script>
