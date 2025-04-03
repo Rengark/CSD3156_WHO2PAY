@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>
+    <div id="createGroupUI" class="container">
+        <h1>Edit Group</h1>
+        <form id="register-form">
+
+            <div class="input-group">
+                <label for="group-name">Group Name</label>
+                <input type="text" id = "groupName" placeholder="Group Name">
+            </div>
+
+            <div class="input-group">
+                <label for="group-password">Group Password</label>
+                <div class="password-container">
+                    <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
+                    <span class = "eyeToggle">🙈</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Members</label>
+            </div>
+
+            <div class="members-container" id="membersList">
+                <!-- Members will be added here dynamically -->
+            </div>
+
+            <div class="add-member-container" id="addMemberContainer"></div>
+
+            <button class="btn" id ="backtolist">Back</button>
+            <button class="btn add" id="add">Add Members</button>
+
+        <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
+
+        <div class="buttons">
+            <button class="btn green" id = "save" value = "save">Save Group Settings</button>
+        </div>
+        </form>
+    </div>
+        <script src="/js/grp-edit.js"></script>
+</body>
+</html>

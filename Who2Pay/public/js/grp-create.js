@@ -36,6 +36,7 @@ function updateMemberList() {
         removebutton.innerText = "X";
         removebutton.id = "removeMember" + index;
         removebutton.className = "delete-btn";
+        removebutton.style.cursor = "pointer";
         removebutton.addEventListener('pointerdown', () => removeMember(index));
         memberDiv.appendChild(removebutton);
         list.appendChild(memberDiv);
