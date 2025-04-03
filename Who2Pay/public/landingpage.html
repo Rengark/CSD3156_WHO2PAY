@@ -9,24 +9,26 @@
 <body>
      <div id="joingroupUI" class="container vertical-center" style="display: block;">
         <h1>Join Group</h1>
-        <p>Don't have a group? <a href="#" id="creategrp">Create one</a></p>
-        
+        <p>Don't have a group? <a id="creategrp" href="/group-create">Create one</a></p>
+        <form>
         <! -- group name --!>
         <div class="input-group">
-            <label>Group Session Code</label>
+            <label type="group-session-code">Group Session Code</label>
             <input type="text" id = "groupName" placeholder="Group Session Code">
         </div>
 
         <! -- group password --!>
         <div class="input-group">
-            <label>Group Password</label>
+            <label type = "group-password">Group Password</label>
             <div class="password-container">
                 <input type="password" class="pswd groupPassword" id = "groupPassword" placeholder="Password">
                 <span class = "eyeToggle">🙈</span>
             </div>
         </div>
+
         <p class ="warning" id = "grpwarning" style="display: none;">Oops! The Session Code or Password entered was incorrect.</p>
-        <button id="join" class = "btn green">Join</button>
+        <button id="join" class = "btn green" type = "submit">Join</button>
+    </form>
     </div>
 
     <div id="memberloginUI" class="container vertical-center" style="display: none;">

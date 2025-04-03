@@ -4,7 +4,7 @@ let grpowner = "John Doe"; // Example group owner
 let grpname = "test";
 
 
-
+//password stuff
 function togglePassword() {
     const passwordField = document.getElementsByClassName("pswd");
     //loop all password fieldds
@@ -19,31 +19,6 @@ function togglePassword() {
     }
 
 }
-
-// Event listener for save button
-
-
-function switchToGroupOwnerUI() {
-    if(members.length === 0) {
-        document.getElementById("grpwarning").style.display = "block";
-        return;
-    }
-
-    document.getElementById("createGroupUI").style.display = "none";
-    document.getElementById("groupOwnerUI").style.display = "block";
-    
-    const nameDropdown = document.getElementById("ownerName");
-    nameDropdown.innerHTML = "";
-    members.forEach(member => {
-        const option = document.createElement("option");
-        option.value = member;
-        option.textContent = member;
-        nameDropdown.appendChild(option);
-    });
-}
-
-
-
 var et = document.getElementsByClassName('eyeToggle');
 if(et.length > 0) {
     for (let i = 0; i < et.length; i++) {

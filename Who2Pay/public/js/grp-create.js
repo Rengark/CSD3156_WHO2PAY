@@ -127,16 +127,12 @@ if(et.length > 0) {
 
 function createGroup()
 {
-    //check if a name is chosen, cannot be value none
+    const groupName = document.getElementById("groupName").value.trim();
+    const groupPassword = document.getElementById("groupPassword").value.trim();
 
-    //check if a password is set
-
-
-    //set owner to whatever was in the dropdown
     const nameDropdown = document.getElementById("ownerName");
     owner = nameDropdown.options[nameDropdown.selectedIndex].value;
     const ownerpassword = document.getElementById("ownerPassword").value.trim();
 
-    const groupName = document.getElementById("groupName").value.trim();
-    const groupPassword = document.getElementById("groupPassword").value.trim();
+
 }

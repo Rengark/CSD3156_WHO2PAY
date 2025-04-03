@@ -60,3 +60,15 @@ app.get('/dashboard', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+//load group-create.html
+app.get('/group-create', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'group-create.html'));
+}
+);
+
+//load group-join.html
+app.get('/landingpage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
+}
+);

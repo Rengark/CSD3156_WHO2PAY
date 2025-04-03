@@ -9,35 +9,36 @@
 <body>
     <div id="createGroupUI" class="container">
         <h1>Create Group</h1>
-        <p>Already have a group? <a href="#">Log in</a></p>
+        <p>Already have a group? <a href="/landingpage">Log in</a></p>
+        <form id="register-form">
 
-        <div class="input-group">
-            <label>Group Name</label>
-            <input type="text" placeholder="Group Name">
-        </div>
-
-        <div class="input-group">
-            <label>Group Password</label>
-            <div class="password-container">
-                <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
-                <span class = "eyeToggle">🙈</span>
+            <div class="input-group">
+                <label for="group-name">Group Name</label>
+                <input type="text" placeholder="Group Name">
             </div>
-        </div>
 
-        <div class="input-group">
-            <label>Members</label>
-            <div>
-                <input type="checkbox" checked> Members should make passwords
+            <div class="input-group">
+                <label for="group-password">Group Password</label>
+                <div class="password-container">
+                    <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
+                    <span class = "eyeToggle">🙈</span>
+                </div>
             </div>
-            <small>Note: The group owner will need a password even if the other members don’t</small>
-        </div>
 
-        <div class="members-container" id="membersList">
-            <!-- Members will be added here dynamically -->
-        </div>
+            <div class="input-group">
+                <label>Members</label>
+                <div>
+                    <input type="checkbox" checked> Members should make passwords
+                </div>
+                <small>Note: The group owner will need a password even if the other members don’t</small>
+            </div>
 
-        <div class="add-member-container" id="addMemberContainer"></div>
-        <button class="btn add" id="add">Add Members</button>
+            <div class="members-container" id="membersList">
+                <!-- Members will be added here dynamically -->
+            </div>
+
+            <div class="add-member-container" id="addMemberContainer"></div>
+            <button class="btn add" id="add">Add Members</button>
 
         <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
 
@@ -45,6 +46,7 @@
             <button class="btn" id ="backtocreate">Back</button>
             <button class="btn green" id = "nxtstep">Next Step</button>
         </div>
+        </form>
     </div>
 
      <!-- Set Group Owner UI -->
@@ -52,23 +54,27 @@
         <h1>Set Group Owner</h1>
         <p>Forgot to add your name? <a href="#" class="backtocg">Go back</a></p>
 
-        <div class="input-group">
-            <label>Owner Name</label>
+        <form id="set-owner-form">
+            <div class="input-group">
+            <label for="owner-name">Owner Name</label>
             <select id="ownerName"></select>
-        </div>
+            </div>
 
-        <div class="input-group">
-            <label>Owner Password</label>
+            <div class="input-group">
+            <label for="owner-password">Owner Password</label>
             <div class="password-container">
                 <input type="password" class="pswd" placeholder="Password">
                 <span class = "eyeToggle">🙈</span>
             </div>
-        </div>
+            </div>
+
+
         <div></div>
         <p><i>Note: Group ownership cannot be transferred later.</i></p>
 
         <button class="backtocg btn">Back</button>
-        <button id="create" class = "btn green">Create Group</button>
+        <button id="create" class = "btn green" type ="submit">Create Group</button>
+    </form>
     </div>
 
         <script src="/js/grp-create.js"></script>
