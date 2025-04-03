@@ -72,3 +72,9 @@ app.get('/landingpage', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
 }
 );
+
+//load member-login.html
+app.get('/member-login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'member-login.html'));
+}
+);

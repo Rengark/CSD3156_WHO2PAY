@@ -64,9 +64,6 @@ function togglePassword() {
 
 }
 
-// Event listener for save button
-
-
 function switchToGroupOwnerUI() {
     if(members.length === 0) {
         document.getElementById("grpwarning").style.display = "block";
@@ -125,6 +122,8 @@ if(et.length > 0) {
     }
 }
 
+
+//@junwei this is all the values need to be saved in the db after submit is clicked
 function createGroup()
 {
     const groupName = document.getElementById("groupName").value.trim();
@@ -134,5 +133,6 @@ function createGroup()
     owner = nameDropdown.options[nameDropdown.selectedIndex].value;
     const ownerpassword = document.getElementById("ownerPassword").value.trim();
 
+    //member is the array for getting the list of people initially in the group
 
 }
