@@ -322,11 +322,12 @@ function saveExpense() {
 	// Save button logic here
 	// Compute the transaction details using 
 	// the values in the arrays "payeeAmountsPaid" and "payerAmountsToPay"
-	if(!saveButton.disabled)
-		console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
-	else
+	if(saveButton.disabled) {
 		console.log("saveExpense called but button is not enabled");
+		return;
+	}
 
+	console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
 	// get form data
 	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
