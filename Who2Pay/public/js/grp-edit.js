@@ -6,6 +6,13 @@ let grpname = "test"; // ->after login in get from db
 let newMembers = []; // Array to hold new members to be added
 
 
+//query page load call OnPageLoadGetUsers -> can fill data here
+window.onload = function() {
+    updateMemberList();
+    updateGroupNameandPassword();
+};
+
+
 //password stuff
 function togglePassword() {
     const passwordField = document.getElementsByClassName("pswd");
@@ -74,11 +81,7 @@ function updateGroupNameandPassword()
 }
 
 
-//query page load call OnPageLoadGetUsers
-window.onload = function() {
-    updateMemberList();
-    updateGroupNameandPassword();
-};
+
 
 function confirmMember() {
     const input = document.getElementById("newMemberName");

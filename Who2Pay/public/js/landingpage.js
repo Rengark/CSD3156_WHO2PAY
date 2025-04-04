@@ -1,6 +1,5 @@
-let grpowner = "John Doe"; // Example group owner
-let grpname = "test";
-
+let grpname = "test"; // -> get from db
+let grppassword = "123"; // -get from db
 
 //password stuff
 function togglePassword() {
@@ -31,8 +30,8 @@ function JoinGroup()
     const groupPassword = document.getElementById("grouppassword").value;
     
     //need to get the database, and check for grp name and grp password here
-    //using the hardcoded grpname and password for now
-    if (groupName === grpname && groupPassword === "123") 
+    //using the hardcoded grpname and password for now @junwei
+    if (groupName === grpname && groupPassword === grppassword) 
     {
         document.getElementById("grpwarning").style.display = "none";
         //load member login page the same as clicking a button w href load /member-login

@@ -4,6 +4,12 @@ let grpowner = "John Doe"; // Example group owner ->need to get from db
 let grpname = "test"; // ->after login in get from db
 
 
+//query page load call OnPageLoadGetUsers ->can fill data here
+window.onload = function() {
+    OnPageLoadGetUsers();
+};
+
+
 //password stuff
 function togglePassword() {
     const passwordField = document.getElementsByClassName("pswd");
@@ -54,10 +60,6 @@ function OnPageLoadGetUsers()
     welcomeMessage.innerText = "Welcome to " + grpname + "!";
 }
 
-//query page load call OnPageLoadGetUsers
-window.onload = function() {
-    OnPageLoadGetUsers();
-};
 
 //when something is selected in the dropdown, show the password field
 function showPasswordField() {
