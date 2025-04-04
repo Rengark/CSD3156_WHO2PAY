@@ -1,0 +1,119 @@
+body {
+	font-family: Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	margin: auto;
+	padding: 25px;
+}
+
+.main-container {
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    max-width: 70%;
+    padding: 20px;
+}
+
+.column-container {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    margin: 0 auto; /* Centers the container */
+	gap: 25px;
+    padding: 25px;
+}
+
+.center-container {
+    display: flex;
+	flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Centers the container */
+    margin-bottom: 25px;
+	gap: 25px;
+    padding: 25px;
+}
+
+
+/* form {
+
+} */
+
+.button-left-right-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.info-text {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.icon-text {
+    font-size: 2rem;
+    margin: 0 20px;
+}
+
+
+
+
+  /* ------------------- BUTTON STYLES -------------------- */
+
+  /* ----- Default button  settings ----- */
+  button {
+    display: block;
+    padding: 15px 0;
+    width: 100%;
+    max-width: 200px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* ----- Light green button ----- */
+  button.light-green {
+    background: #B3DFDB;
+    color: black;
+    border: 1px #129688;
+  }
+
+  button.light-green:hover {
+    background: #95D2CC;
+  }
+  
+  /* ----- Dark green button ----- */
+  button.dark-green {
+    background: #129688;
+    color: white;
+    border: 1px #0C796B;
+  }
+
+  button.dark-green:hover {
+    background: #087E72;
+  }
+  
+  /* ----- Dark red button ----- */
+  button.dark-red {
+    background: #F2413C;
+    color: white;
+    border: 1px #D12D33;
+  }
+
+  button.dark-red:hover {
+    background: #CA2621;
+  }
