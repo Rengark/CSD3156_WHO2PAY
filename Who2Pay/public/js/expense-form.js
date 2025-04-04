@@ -322,11 +322,12 @@ function saveExpense() {
 	// Save button logic here
 	// Compute the transaction details using 
 	// the values in the arrays "payeeAmountsPaid" and "payerAmountsToPay"
-	if(!saveButton.disabled)
-		console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
-	else
+	if(saveButton.disabled) {
 		console.log("saveExpense called but button is not enabled");
+		return;
+	}
 
+	console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
 	// get form data
 	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
@@ -372,6 +373,11 @@ function saveExpense() {
 	})
 }
 
+function backButtonPressed() {
+	if(!backButton.disabled)
+		navigateToPage("ExpenseList");
+}
+
 // Event listeners for amount fields
 document.getElementById('subtotal').addEventListener('input', calculateTotal);
 document.getElementById('additionalCharge').addEventListener('input', calculateTotal);
@@ -383,8 +389,9 @@ document.getElementById('expenseName').addEventListener('input', validateForm);
 document.getElementById('payeeSplitMethod').addEventListener('change', populatePayees);
 document.getElementById('payerSplitMethod').addEventListener('change', populatePayers);
 
-// Event listener for save button
+// Event listener for buttons
 document.getElementById('saveButton').addEventListener('pointerdown', saveExpense);
+document.getElementById('backButton').addEventListener('pointerdown', backButtonPressed);
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {

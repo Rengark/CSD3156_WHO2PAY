@@ -1,0 +1,126 @@
+/* ---------- NAVBAR ---------- */
+.navbar {
+    width: 100%;
+    display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.nav-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.session-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.session-label {
+    font-size: 14px;
+    color: #333;
+}
+
+.code-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 0px 0px 0px 10px;
+}
+
+.session-code {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+}
+
+.copy-btn:hover {
+    color: #333;
+}
+
+
+/* ---------- EXPENSE LIST ---------- */
+
+.expenses-container {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    max-width: 30%;
+    min-width: 350px;
+    gap: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.date-header {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 15px 0 10px 10px;
+    color: #333;
+}
+
+.expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 0;
+    margin-bottom: 8px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 90%;
+}
+
+.expense-name {
+    font-size: 16px;
+}
+
+.expense-amount {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.expense-options {
+    color: #888;
+    font-weight: bold;
+}
+
+.expense-right {
+    display: flex;
+    align-items: center;
+}
