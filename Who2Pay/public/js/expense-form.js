@@ -1,15 +1,38 @@
+//const { format } = require("../../config/db");
+
 // Sample list of people
 const people = ["John Doe", "Mary Jane", "Gary Stu", "Bjarne Stroustrup"];
 
 const payeeAmountsPaid = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts paid by each payee
 const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts to be paid by each payer
 
+function populateInitialData() { 
+	// @TODO - if coming from the expense list page, should populate the fields with the transaction details
+
+}
+
 // Function to calculate the final total
 function calculateTotal() {
-	const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
-	const additionalCharge = parseFloat(document.getElementById('additionalCharge').value) || 0;
+	subtotalElement = document.getElementById('subtotal');
+	additionalChargeElement = document.getElementById('additionalCharge');
+	
+	// Parse input: Ensure only one decimal point
+	subtotalElement.value = subtotalElement.value.replace(/[^0-9.]/g, '');
+	const parts = subtotalElement.value.split('.');
+	if (parts.length > 2) {
+		subtotalElement.value = parts[0] + '.' + parts.slice(1).join('');
+	}
+
+	additionalChargeElement.value = additionalChargeElement.value.replace(/[^0-9.]/g, '');
+	const parts2 = additionalChargeElement.value.split('.');
+	if (parts2.length > 2) {
+		additionalChargeElement.value = parts[0] + '.' + parts.slice(1).join('');
+	}
+	
+	const subtotal = readAmount(document.getElementById('subtotal').value) || 0;
+	const additionalCharge = readAmount(document.getElementById('additionalCharge').value) || 0;
 	const finalTotal = subtotal + additionalCharge;
-	document.getElementById('finalTotal').value = finalTotal.toFixed(2);
+	document.getElementById('finalTotal').value = formatAmount(finalTotal);
 	
 	// After total is calculated, update payer and payee amounts
 	updatePayeeAmounts();
@@ -23,7 +46,7 @@ function calculateTotal() {
 function updatePayeeAmounts() {
 	const splitMethod = document.getElementById('payeeSplitMethod').value;
 	if (splitMethod === 'Equal Amounts') {
-		const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
+		const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 		const selectedPayees = document.querySelectorAll('.payee-participation:checked');
 		const countSelectedPayees = selectedPayees.length;
 		
@@ -36,7 +59,7 @@ function updatePayeeAmounts() {
 				const amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
 				
 				if (checkbox.checked) {
-					amountElement.textContent = `$${amountPerPayee.toFixed(2)}`;
+					amountElement.textContent = `$${formatAmount(amountPerPayee)}`;
 					payeeAmountsPaid[index] = amountPerPayee; // Update the payee amounts array
 				} else {
 					amountElement.textContent = '\$0.00';
@@ -49,7 +72,7 @@ function updatePayeeAmounts() {
 
 // Function to validate the form
 function validateForm() {
-	const saveButton = document.getElementById('saveButton');
+	const saveButton = document.getElementById('submit');
 	const expenseName = document.getElementById('expenseName').value.trim();
 	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
@@ -126,7 +149,7 @@ function validateForm() {
 function calculatePayeeTotal() {
 	let total = 0;
 	document.querySelectorAll('.payee-amount').forEach(input => {
-		total += parseFloat(input.value) || 0;
+		total += readAmount(input.value) || 0;
 	});
 	return total;
 }
@@ -135,7 +158,7 @@ function calculatePayeeTotal() {
 function calculatePayerTotal() {
 	let total = 0;
 	document.querySelectorAll('.payer-amount-input').forEach(input => {
-		total += parseFloat(input.value) || 0;
+		total += readAmount(input.value) || 0;
 	});
 	return total;
 }
@@ -145,7 +168,7 @@ function updatePayerAmounts() {
 	// Handle equal split logic
 	const splitMethod = document.getElementById('payerSplitMethod').value;
 	if (splitMethod === 'Equal Amounts') {
-		const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
+		const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 		const selectedPayers = document.querySelectorAll('.payer-participation:checked');
 		const countSelectedPayers = selectedPayers.length;
 		
@@ -158,7 +181,7 @@ function updatePayerAmounts() {
 				const amountElement = document.querySelector(`.payer-amount[data-index="${index}"]`);
 				
 				if (checkbox.checked) {
-					amountElement.textContent = `$${amountPerPayer.toFixed(2)}`;
+					amountElement.textContent = `$${formatAmount(amountPerPayer)}`;
 					payerAmountsToPay[index] = amountPerPayer; // Update the payer amounts array
 				} else {
 					amountElement.textContent = '\$0.00';
@@ -201,7 +224,7 @@ function populatePayees() {
 				</div>
 				<div class="person-amount">
 					<span class="currency">$</span>
-					<input type="text" class="payee-amount" data-index="${index}" value="${payeeAmountsPaid[index].toFixed(2)}">
+					<input type="text" class="payee-amount" data-index="${index}" value="${formatAmount(payeeAmountsPaid[index])}">
 				</div>
 			`;
 		}
@@ -224,16 +247,31 @@ function populatePayees() {
 	} else {
 		document.querySelectorAll('.payee-amount').forEach(input => {
 			input.addEventListener('input', function() {
+    
+				// Parse input: Ensure only one decimal point
+				input.value = input.value.replace(/[^0-9.]/g, '');
+				const parts = input.value.split('.');
+				if (parts.length > 2) {
+					input.value = parts[0] + '.' + parts.slice(1).join('');
+				}
+				
 				// Custom amounts logic
 				const index = input.dataset.index;
-				const amount = parseFloat(input.value) || 0;
+				const amount = readAmount(input.value) || 0;
 				payeeAmountsPaid[index] = amount; // Update the payee amounts array
 				
 				const amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
-				amountElement.textContent = `$${amount.toFixed(2)}`;
+				amountElement.textContent = '$' + input.value;
 
 				// Handle amount changes
 				validateForm();
+			});
+
+			input.addEventListener('focusout', function(e) {
+				input.value = formatAmount(readAmount(input.value));
+				const index = input.dataset.index;
+				document.querySelector(`.payee-amount-display[data-index="${index}"]`).textContent = '$' + input.value;
+				console.log("input lost focus");
 			});
 		});
 	}
@@ -271,11 +309,11 @@ function populatePayers() {
 			row.innerHTML = `
 				<div class="payer-info">
 					<div class="person-name">${person}</div>
-					<div class="payer-amount" data-index="${index}">$${payerAmountsToPay[index].toFixed(2)}</div>
+					<div class="payer-amount" data-index="${index}">$${formatAmount(payerAmountsToPay[index])}</div>
 				</div>
 				<div class="person-amount">
 					<span class="currency">$</span>
-					<input type="text" class="payer-amount-input" data-index="${index}" value="${payerAmountsToPay[index].toFixed(2)}">
+					<input type="text" class="payer-amount-input" data-index="${index}" value="${formatAmount(payerAmountsToPay[index])}">
 				</div>
 			`;
 		}
@@ -297,15 +335,30 @@ function populatePayers() {
 	} else {
 		document.querySelectorAll('.payer-amount-input').forEach(input => {
 			input.addEventListener('input', function() {
-				// Update the displayed amount
+
+				// Parse input: Ensure only one decimal point
+				input.value = input.value.replace(/[^0-9.]/g, '');
+				const parts = input.value.split('.');
+				if (parts.length > 2) {
+					input.value = parts[0] + '.' + parts.slice(1).join('');
+				}
+				
+				// Custom amounts logic
 				const index = input.dataset.index;
-				const amount = parseFloat(input.value) || 0;
+				const amount = readAmount(input.value) || 0;
 				payerAmountsToPay[index] = amount; // Update the payer amounts array
 				
 				const amountDisplay = document.querySelector(`.payer-amount[data-index="${index}"]`);
-				amountDisplay.textContent = `$${amount.toFixed(2)}`;
+				amountDisplay.textContent = '$' + input.value;
 				
 				validateForm();
+			});			
+
+			input.addEventListener('focusout', function(e) {
+				input.value = formatAmount(readAmount(input.value));
+				const index = input.dataset.index;
+				document.querySelector(`.payer-amount[data-index="${index}"]`).textContent = '$' + input.value;
+				console.log("input lost focus");
 			});
 		});
 	}
@@ -322,14 +375,14 @@ function saveExpense() {
 	// Save button logic here
 	// Compute the transaction details using 
 	// the values in the arrays "payeeAmountsPaid" and "payerAmountsToPay"
-	if(saveButton.disabled) {
+	if(document.getElementById('submit').disabled) {
 		console.log("saveExpense called but button is not enabled");
 		return;
 	}
 
 	console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
 	// get form data
-	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
+	const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
 	const payerSplitMethod = document.getElementById('payerSplitMethod').value;
 
@@ -374,13 +427,25 @@ function saveExpense() {
 }
 
 function backButtonPressed() {
-	if(!backButton.disabled)
+	if(!document.getElementById('return').disabled)
 		navigateToPage("ExpenseList");
 }
 
 // Event listeners for amount fields
 document.getElementById('subtotal').addEventListener('input', calculateTotal);
+document.getElementById('subtotal').addEventListener('focusout', function(e) {
+	this.value = formatAmount(readAmount(this.value));
+	const index = this.dataset.index;
+	this.textContent = this.value;
+	console.log("input lost focus");
+});
 document.getElementById('additionalCharge').addEventListener('input', calculateTotal);
+document.getElementById('additionalCharge').addEventListener('focusout', function(e) {
+	this.value = formatAmount(readAmount(this.value));
+	const index = this.dataset.index;
+	this.textContent = this.value;
+	console.log("input lost focus");
+});
 
 // Event listener for expense name
 document.getElementById('expenseName').addEventListener('input', validateForm);
@@ -390,13 +455,14 @@ document.getElementById('payeeSplitMethod').addEventListener('change', populateP
 document.getElementById('payerSplitMethod').addEventListener('change', populatePayers);
 
 // Event listener for buttons
-document.getElementById('saveButton').addEventListener('pointerdown', saveExpense);
-document.getElementById('backButton').addEventListener('pointerdown', backButtonPressed);
+document.getElementById('submit').addEventListener('pointerdown', saveExpense);
+document.getElementById('return').addEventListener('pointerdown', backButtonPressed);
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
 	populatePayees();
 	populatePayers();
+	populateInitialData(); // @TODO - if coming from the expense list page, should populate the fields with the transaction details
 	calculateTotal();
 	validateForm();
 });
