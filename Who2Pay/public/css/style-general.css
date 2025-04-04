@@ -53,6 +53,14 @@ h1 {
     color: #333;
 }
 
+.error-message {
+	color: #d9534f;
+	font-size: 14px;
+	margin-bottom: 15px;
+	min-height: 20px;
+	display: none;
+}
+
 .info-text {
     font-size: 1.2rem;
     margin-bottom: 30px;

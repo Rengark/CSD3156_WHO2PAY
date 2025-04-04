@@ -3,7 +3,23 @@
 function formatAmount(amount) {
     // Convert cents to dollars and format with 2 decimal places
     absAmt = Math.abs(amount);
-    return '$' + Math.floor(absAmt / 100) + '.' + Math.floor(absAmt % 100).toString().padStart(2, '0');
+    return Math.floor(absAmt / 100).toString() + '.' + Math.floor(absAmt % 100).toString().padStart(2, '0');
+}
+
+// This function reads a string in format X.XX
+// and returns it as the number of cents
+function readAmount(amountString) {    
+    const parts = amountString.replace(/[^0-9.]/g, '').split('.');
+    let numericalAmount = 0;
+    if (parts.length === 1) {
+        // convert the dollars to cents
+        numericalAmount = parseInt(parts[0], 10) * 100;
+    } else if(parts.length > 1) {
+        // add the dollars * 100 and cents
+        numericalAmount = parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
+    }
+
+    return numericalAmount;
 }
 
 // Function to format date as (D)D Month YYYY
