@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>    
+    <div id="memberloginUI" class="container vertical-center">
+        <h2>Join Group</h2>
+        <form>
+        <p id = "wlc" type = "message">Welcome to grp</p>
+
+        <div class="input-group">
+            <label type="username">Your Name</label>
+            <select id="username"></select>
+        </div>
+
+        <div class="input-group" style ="display: none;" id = "memberPasswordContainer">
+            <label type = "password">Your Password</label>
+            <div class="password-container">
+                <input type="password" class="pswd" placeholder="Password">
+                <span class = "eyeToggle">🙈</span>
+            </div>
+        </div>
+
+        <div class="input-group" style ="display: none;" id = "newMemberPasswordContainer">
+            <p>It looks like it's your first time here! Please make a password to secure your profile.</p>
+            <label type = "password">Create Password</label>
+            <div class="password-container">
+                <input type="password" class="pswd" placeholder="Password">
+                <span class = "eyeToggle">🙈</span>
+            </div>
+        </div>
+
+        <button class="btn" id="log-out" type ="log-out">Back</button>
+        <button id="join" class = "btn green">Join</button>
+
+        </form>
+    </div>
+        <script src="/js/member-login.js"></script>
+</body>
+</html>

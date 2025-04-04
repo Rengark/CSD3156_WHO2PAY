@@ -46,7 +46,7 @@ app.use('/createGroup', createGroupRoutes);
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+  res.sendFile(path.join(__dirname, 'public', 'expense-create.html'));
 });
 
 // Protected route example
@@ -62,3 +62,27 @@ app.get('/dashboard', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+//load group-create.html
+app.get('/group-create', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'group-create.html'));
+}
+);
+
+//load group-join.html
+app.get('/landingpage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
+}
+);
+
+//load member-login.html
+app.get('/member-login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'member-login.html'));
+}
+);
+
+//load expense-list.html
+app.get('/expense-list', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'expense-list.html'));
+}
+);

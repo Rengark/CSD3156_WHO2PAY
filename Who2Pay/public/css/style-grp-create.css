@@ -1,0 +1,211 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+
+
+.container {
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.input-group {
+    margin: 30px 0;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+.password-container {
+    display: flex;
+    align-items: center;
+}
+.password-container input {
+    flex: 1;
+}
+.password-container .eyeToggle {
+    cursor: pointer;
+    padding: 8px;
+}
+.members-container {
+    border: 1px solid #ccc;
+    width: 100%;
+    border-radius: 5px;
+    padding: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    text-align: left;
+}
+.member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px;
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+.buttons {
+    margin-top: 20px;
+}
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #adadad;
+        color: white;
+    }
+}
+.btn.add {
+    background-color: #a8dadc;
+    margin-top: 5px;
+    &:hover {
+        background-color: #87b4b6;
+    }
+}
+.btn.green {
+    background-color: #1d7874;
+    color: white;
+
+    &:hover {
+        background-color: #457b9d;
+    }
+}
+
+#ownername, #username{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 36px; 
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+div .space
+{
+    margin: 10px 0;
+}
+
+.warning
+{
+    color: red;
+    font-size: 20px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+#deleteGroup
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff606e;
+    color: rgb(255, 255, 255);
+    border-color: black;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+}
+
+.confirm {
+    display: none;
+  
+    > div {
+      &:first-of-type {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        top: 0px;
+        left: 0px;
+      }
+  }
+  
+    
+   .test {
+        padding: 10px 20px;
+        background: white;
+        position: absolute;
+        width: auto;
+        height: auto;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+        border: 1px solid #333;
+  
+        div {
+          &:first-of-type {
+            min-width: 150px;
+            padding: 10px;
+          }
+  
+          &:last-of-type {
+            text-align: center;
+
+            input[type="button"]{
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+
+                color: white;
+                margin: 0 5px;
+                cursor: pointer;
+    
+              }
+          }
+
+        }
+
+        #confirmYes {
+            background-color: #b9000f;
+
+            &:hover {
+                background-color: #c04651;
+            }
+        }
+
+        #confirmNo {
+            background-color: #1d7874;
+            &:hover {
+                background-color: #457b9d;
+            }
+        }
+    
+    }
+    }

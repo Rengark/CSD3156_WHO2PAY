@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settle Up</title>
+    <link rel="stylesheet" href="/css/style-general.css">
+    <link rel="stylesheet" href="/css/style-settle-up.css">
+</head>
+<body>
+    <div class="main-container">
+        <h1>Settle Up</h1>
+        <!--<p class="info-text" id="info-text">John Doe owes Gary Stu $3.00</p>-->
+        
+        <form id="settle-up-form">
+            <div class="dropdown-container">
+                <select class="member-dropdown" id="person-a">
+                    <!-- Additional options can be added dynamically -->
+                </select>
+                
+                <div class="icon-text">→</div>
+                
+                <select class="member-dropdown" id="person-b">
+                    <!-- Additional options can be added dynamically -->
+                </select>
+            </div>
+
+            <div id="personError" class="error-message">The payer and recipient must be different people.</div>
+
+            <div class="center-container">
+                <div class="dollar-sign">$</div>
+                <input type="text" class="amount-input" id="amount" value="0.00">
+            </div>
+            
+            <div class="center-container">
+                <button class="light-green" id="return" type="return">Back</button>
+                <button class="dark-green"  id="submit" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/js/utility.js"></script>
+    <script src="/js/settle-up.js"></script>
+</body>
+</html>

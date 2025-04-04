@@ -1,0 +1,143 @@
+body {
+	font-family: Roboto, sans-serif;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.main-container {
+    display: block;
+    text-align: center;
+    align-items: center;
+    width: 100%; 
+    padding: 20px;
+}
+
+.column-container {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    margin: 0 auto; /* Centers the container */
+	gap: 25px;
+    padding: 25px;
+}
+
+.center-container {
+    display: flex;
+	flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    margin: 0 auto; /* Centers the container */
+    margin-bottom: 25px;
+	gap: 25px;
+}
+
+
+/* form {
+
+} */
+
+.button-left-right-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.error-message {
+	color: #d9534f;
+	font-size: 14px;
+	margin-bottom: 15px;
+	min-height: 20px;
+	display: none;
+}
+
+.info-text {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.icon-text {
+    font-size: 2rem;
+    margin: 0 20px;
+}
+
+/* Material Icons specific styles */
+.material-icons {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+
+  /* ------------------- BUTTON STYLES -------------------- */
+
+  /* ----- Default button  settings ----- */
+  button {
+    display: block;
+    padding: 15px;
+    width: 100%;
+    max-width: 200px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, opacity 0.3s;
+    margin: 12.5px;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* ----- Light green button ----- */
+  button.light-green {
+    background: #B3DFDB;
+    color: black;
+    border: 1px #129688;
+  }
+
+  button.light-green:hover {
+    background: #95D2CC;
+  }
+  
+  /* ----- Dark green button ----- */
+  button.dark-green {
+    background: #129688;
+    color: white;
+    border: 1px #0C796B;
+  }
+
+  button.dark-green:hover {
+    background: #087E72;
+  }
+  
+  /* ----- Dark red button ----- */
+  button.dark-red {
+    background: #F2413C;
+    color: white;
+    border: 1px #D12D33;
+  }
+
+  button.dark-red:hover {
+    background: #CA2621;
+  }
+
+  /* ----- Square button ----- */
+  button.square-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
