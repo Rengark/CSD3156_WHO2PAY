@@ -36,6 +36,7 @@ function updateMemberList() {
         removebutton.innerText = "X";
         removebutton.id = "removeMember" + index;
         removebutton.className = "delete-btn";
+        removebutton.style.cursor = "pointer";
         removebutton.addEventListener('pointerdown', () => removeMember(index));
         memberDiv.appendChild(removebutton);
         list.appendChild(memberDiv);
@@ -64,9 +65,6 @@ function togglePassword() {
 
 }
 
-// Event listener for save button
-
-
 function switchToGroupOwnerUI() {
     if(members.length === 0) {
         document.getElementById("grpwarning").style.display = "block";
@@ -76,7 +74,7 @@ function switchToGroupOwnerUI() {
     document.getElementById("createGroupUI").style.display = "none";
     document.getElementById("groupOwnerUI").style.display = "block";
     
-    const nameDropdown = document.getElementById("ownerName");
+    const nameDropdown = document.getElementById("ownername");
     nameDropdown.innerHTML = "";
 
     const d = document.createElement("option");
@@ -125,18 +123,17 @@ if(et.length > 0) {
     }
 }
 
+
+//@junwei this is all the values need to be saved in the db after submit is clicked
 function createGroup()
 {
-    //check if a name is chosen, cannot be value none
+    const groupName = document.getElementById("groupName").value.trim();
+    const groupPassword = document.getElementById("groupPassword").value.trim();
 
-    //check if a password is set
-
-
-    //set owner to whatever was in the dropdown
-    const nameDropdown = document.getElementById("ownerName");
+    const nameDropdown = document.getElementById("ownername");
     owner = nameDropdown.options[nameDropdown.selectedIndex].value;
     const ownerpassword = document.getElementById("ownerPassword").value.trim();
 
-    const groupName = document.getElementById("groupName").value.trim();
-    const groupPassword = document.getElementById("groupPassword").value.trim();
+    //member is the array for getting the list of people initially in the group
+
 }
