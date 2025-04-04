@@ -27,8 +27,8 @@ if(et.length > 0) {
 
 function JoinGroup()
 {
-    const groupName = document.getElementById("groupName").value;
-    const groupPassword = document.getElementById("groupPassword").value;
+    const groupName = document.getElementById("groupname").value;
+    const groupPassword = document.getElementById("grouppassword").value;
     
     //need to get the database, and check for grp name and grp password here
     //using the hardcoded grpname and password for now

@@ -106,3 +106,22 @@ var logoutbtn = document.getElementById('log-out')
 if (logoutbtn) {
     logoutbtn.addEventListener('pointerdown', logout);
 }
+
+//login function to check if the user is in the database and password is correct
+//or if new user, add new password to db
+function login()
+{
+    //the values u will want to check @junwei
+    const selectedValue = document.getElementById("username").value;
+
+    const passwords = document.getElementsByClassName("pswd");
+    const password = passwords[0].value;
+    const newUserPassword = passwords[1].value;
+
+    window.location.href = "/expense-list";
+}
+
+var joinbtn = document.getElementById('join')
+if (joinbtn) {
+    joinbtn.addEventListener('pointerdown', login);
+}
