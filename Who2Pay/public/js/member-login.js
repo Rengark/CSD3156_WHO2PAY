@@ -33,7 +33,7 @@ function OnPageLoadGetUsers()
     //fill up members array with the list of users
 
     //fill the dropdown in the member login UI with the list of users
-    dropdown = document.getElementById("userName");
+    dropdown = document.getElementById("username");
     dropdown.innerHTML = "";
     
     const d = document.createElement("option");
@@ -61,7 +61,7 @@ window.onload = function() {
 
 //when something is selected in the dropdown, show the password field
 function showPasswordField() {
-    const selectedValue = document.getElementById("userName").value;
+    const selectedValue = document.getElementById("username").value;
     const passwordField = document.getElementById("memberPasswordContainer");
     const newUserPasswordField = document.getElementById("newMemberPasswordContainer");
     if (selectedValue !== "none") {
@@ -77,7 +77,7 @@ function checkFirstTimeUser()
     //use db to check but we have sample array for now
     //the order of the boolean array corresponds to the user
     //in the members array
-    const selectedValue = document.getElementById("userName").value;
+    const selectedValue = document.getElementById("username").value;
     const index = members.indexOf(selectedValue);
     const isFirstTimeUser = firsttimeusers[index];
     const passwordField = document.getElementById("memberPasswordContainer");
@@ -92,7 +92,7 @@ function checkFirstTimeUser()
     }
 }
 
-var dropdown = document.getElementById("userName");
+var dropdown = document.getElementById("username");
 if (dropdown) {
     dropdown.addEventListener("change", showPasswordField);
 }

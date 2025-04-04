@@ -67,8 +67,8 @@ function removeMember(index) {
 function updateGroupNameandPassword()
 {
     //set the value of the group name and password input
-    const groupName = document.getElementById("groupName");
-    const groupPassword = document.getElementById("groupPassword");
+    const groupName = document.getElementById("groupname");
+    const groupPassword = document.getElementById("grouppassword");
     groupName.value = grpname;
     groupPassword.value = "123"; //hardcoded password for now
 }
@@ -122,8 +122,8 @@ function DeleteGroup()
 function SaveGroupSettings()
 {
     //get group name and password
-    const groupName = document.getElementById("groupName").value;
-    const groupPassword = document.getElementById("groupPassword").value;
+    const groupName = document.getElementById("groupname").value;
+    const groupPassword = document.getElementById("grouppassword").value;
 
     //add new member list to db
     newMembers;
@@ -186,7 +186,7 @@ if (deleteButton) {
 function GoBack()
 {
     //go back to expanse list
-    window.location.href = "/expanselist";
+    window.location.href = "/expense-list";
 }
 
 const backButton = document.getElementById('backbtn');

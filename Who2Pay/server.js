@@ -78,3 +78,9 @@ app.get('/member-login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'member-login.html'));
 }
 );
+
+//load expense-list.html
+app.get('/expense-list', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'expense-list.html'));
+}
+);

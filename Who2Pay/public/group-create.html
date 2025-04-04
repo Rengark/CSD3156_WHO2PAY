@@ -13,22 +13,22 @@
         <form id="register-form">
 
             <div class="input-group">
-                <label for="group-name">Group Name</label>
-                <input type="text" placeholder="Group Name">
+                <label for="groupname">Group Name</label>
+                <input type="text" placeholder="Group Name" id = "groupname">
             </div>
 
             <div class="input-group">
-                <label for="groupPassword">Group Password</label>
+                <label for="grouppassword">Group Password</label>
                 <div class="password-container">
-                    <input type="password" class="pswd" id = "groupPassword" placeholder="Password">
+                    <input type="password" class="pswd" id = "groupPassword" placeholder="Password" id = "grouppassword">
                     <span class = "eyeToggle">🙈</span>
                 </div>
             </div>
 
             <div class="input-group">
                 <label>Members</label>
-                <div type="make-password">
-                    <input type="checkbox" checked> Members should make passwords
+                <div type="makepassword">
+                    <input type="checkbox" id="makepassword" checked> Members should make passwords
                 </div>
                 <small>Note: The group owner will need a password even if the other members don’t</small>
             </div>
@@ -55,14 +55,14 @@
 
         <form id="set-owner-form">
             <div class="input-group">
-            <label for="owner-name">Owner Name</label>
-            <select id="ownerName"></select>
+            <label for="ownername">Owner Name</label>
+            <select id="ownername"></select>
             </div>
 
             <div class="input-group">
-            <label for="owner-password">Owner Password</label>
+            <label for="ownerpassword">Owner Password</label>
             <div class="password-container">
-                <input type="password" class="pswd" placeholder="Password">
+                <input type="password" class="pswd" placeholder="Password" id = "ownerpassword">
                 <span class = "eyeToggle">🙈</span>
             </div>
             </div>

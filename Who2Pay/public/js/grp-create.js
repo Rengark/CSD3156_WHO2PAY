@@ -74,7 +74,7 @@ function switchToGroupOwnerUI() {
     document.getElementById("createGroupUI").style.display = "none";
     document.getElementById("groupOwnerUI").style.display = "block";
     
-    const nameDropdown = document.getElementById("ownerName");
+    const nameDropdown = document.getElementById("ownername");
     nameDropdown.innerHTML = "";
 
     const d = document.createElement("option");
@@ -130,7 +130,7 @@ function createGroup()
     const groupName = document.getElementById("groupName").value.trim();
     const groupPassword = document.getElementById("groupPassword").value.trim();
 
-    const nameDropdown = document.getElementById("ownerName");
+    const nameDropdown = document.getElementById("ownername");
     owner = nameDropdown.options[nameDropdown.selectedIndex].value;
     const ownerpassword = document.getElementById("ownerPassword").value.trim();
 
