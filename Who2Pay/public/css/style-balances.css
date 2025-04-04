@@ -1,19 +1,10 @@
-body {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 30px;
-}
 
 .balances-container {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
+    margin: auto;
 }
 
 .balance-row {
@@ -22,6 +13,8 @@ h1 {
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #e0e0e0;
+    height: 50px;
+    min-width: 400px;
 }
 
 .balance-row:last-child {
@@ -41,65 +34,7 @@ h1 {
     font-weight: bold;
 }
 
-.arrow-button {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    border: none;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-    cursor: pointer;
-}
- 
-.arrow-red {
-    background-color: #ff4c4c;
-}
-
-.arrow-red:hover {
-    background-color: #e53935;
-    transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.arrow-green {
-    background-color: #a5d6a7;
-    color: #2e7d32;
-}
-
-.arrow-green:hover {
-    background-color: #81c784;
-    transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
 .balance-wrapper {
     display: flex;
     align-items: center;
-}
-
-.back-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.back-button {
-    background-color: #a5d6a7;
-    color: #2e7d32;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    min-width: 120px;
-    transition: all 0.2s ease-in-out;
-}
-
-.back-button:hover {
-    background-color: #81c784;
-    transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }

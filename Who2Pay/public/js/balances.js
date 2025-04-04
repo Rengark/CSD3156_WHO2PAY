@@ -1,14 +1,30 @@
-// Amounts are stored as integers (cents) to avoid floating point issues
-const balances = [
-    { name: "John Doe", amount: 0 },
-    { name: "Mary Jane", amount: -500 },
-    { name: "Gary Stu", amount: 270 },
-    { name: "Bjarne Stroustrup", amount: 0 }
-];
+// Queries all the transactions involving this user, 
+// collates the total amount the user owes / is owed
+// and returns it as an array of structs with the format
+// { id : int, name : String, amount: int (amount of money in cents) }
+// If the amount is negative, the user owes that person money.
+// If the amount is positive, the user is owed money 
+function getBalanceSummary() {
 
+    // @TODO Brandon - Add query logic to retrieve all transactions the current user is involved in
+
+    // Amounts are stored as integers (cents) to avoid floating point issues
+    const balances = [
+        { id: 1111, name: "John Doe", amount: 0 },
+        { id: 2222, name: "Mary Jane", amount: -500 },
+        { id: 3333, name: "Gary Stu", amount: 270 },
+        { id: 4444, name: "Bjarne Stroustrup", amount: 0 }
+    ];
+
+    return balances;
+}
+
+// ID of the user currently logged in
+// temp variable for testing
+let currentUserId = 9999;
 
 // Function to populate the balances list
-function renderBalances() {
+function renderBalances(balances) {
     const balancesList = document.getElementById('balances-list');
     balancesList.innerHTML = '';
     
@@ -44,18 +60,26 @@ function renderBalances() {
                 
                 // Create red arrow button
                 const arrowButton = document.createElement('button');
-                arrowButton.className = 'arrow-button arrow-red';
+                arrowButton.className = 'square-btn dark-red';
                 arrowButton.innerHTML = '→';
                 balanceWrapper.appendChild(arrowButton);
+                
+                arrowButton.addEventListener('pointerdown', function() {
+                    goToSettleUpPage(currentUserId, balance.id, -balance.amount);
+                });
             } else {
                 balanceStatus.textContent = 'You are owed:';
                 balanceAmount.textContent = formatAmount(balance.amount);
                 
                 // Create green arrow button
                 const arrowButton = document.createElement('button');
-                arrowButton.className = 'arrow-button arrow-green';
+                arrowButton.className = 'square-btn light-green';
                 arrowButton.innerHTML = '→';
-                balanceWrapper.appendChild(arrowButton);
+                balanceWrapper.appendChild(arrowButton);                
+
+                arrowButton.addEventListener('pointerdown', function() {
+                    goToSettleUpPage(balance.id, currentUserId, balance.amount);
+                });
             }
             
             balanceInfo.appendChild(balanceAmount);
@@ -73,11 +97,21 @@ function renderBalances() {
 
 // Function for the back button
 function backButtonPressed() {
-    if(!backButton.disabled)
+    if(!document.getElementById('return').disabled)
         navigateToPage("ExpenseList");
 }
 
-document.getElementById('backButton').addEventListener('pointerdown', backButtonPressed);
+// Function to navigate to the settle up page
+// id1 - Person A paying person B
+// id2 - Person B being paid by person A
+// amount - money in cents being paid to person B
+function goToSettleUpPage(id1, id2, amount) {
+    navigateToPage(`Settle Up between ${id1} and ${id2} (\$${amount})`);
+}
+
+document.getElementById('return').addEventListener('pointerdown', backButtonPressed);
 
 // Initialize the page
-renderBalances();
+document.addEventListener('DOMContentLoaded', function() {
+    renderBalances(getBalanceSummary());
+});
