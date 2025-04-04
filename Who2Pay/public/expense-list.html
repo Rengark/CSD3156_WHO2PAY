@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expenses App</title>
+    <link rel="stylesheet" href="/css/style-general.css">
     <link rel="stylesheet" href="/css/style-expense-list.css">
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -11,7 +12,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <button class="btn btn-teal" id="logoutBtn">Log Out</button>
+            <button type="logout" id="logout" class="light-green">Log Out</button>
             
             <div class="nav-title">
                 <span id="groupNamePlaceholder"></span> Expenses
@@ -25,19 +26,19 @@
                         <span class="material-icons">content_copy</span>
                     </button>
                 </div>
-                <button class="btn btn-teal settings-btn">
+                <button type="navSettings" id="navSettings" class="light-green square-btn">
                     <span class="material-icons">settings</span>
                 </button>
             </div>
         </div>
     </nav>
     <div class="main-container">
-        <div class="button-container">
-            <button class="btn btn-teal" id="addExpenseBtn">Add Expense</button>
-            <button class="btn btn-darkgreen" id="settleUpBtn">Settle Up</button>
+        <div class="center-container">
+            <button class="light-green" type="navExpenseCreation" id="navExpenseCreation">Add Expense</button> <!--- Navigates to expense creation page -->
+            <button class="dark-green" type="navBalances" id="navBalances">Settle Up</button> <!--- Navigates to balances page -->
         </div>
     
-        <div class="expenses-container" id="expensesContainer">
+        <div class="expenses-container column-container " id="expensesContainer">
             <!-- Expenses will be populated here by JavaScript -->
         </div>
     </div>
