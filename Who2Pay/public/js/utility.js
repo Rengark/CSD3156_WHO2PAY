@@ -2,7 +2,8 @@
 // This function formats the amount as currency
 function formatAmount(amount) {
     // Convert cents to dollars and format with 2 decimal places
-    return '$' + Math.abs(amount / 100).toFixed(2);
+    absAmt = Math.abs(amount);
+    return '$' + Math.floor(absAmt / 100) + '.' + Math.floor(absAmt % 100).toString().padStart(2, '0');
 }
 
 // Function to format date as (D)D Month YYYY
@@ -34,7 +35,7 @@ function copyToClipboard(text) {
                 copyBtn.innerHTML = originalIcon;
             }, 1500);
             
-            console.log('Session code copied to clipboard!');
+            //console.log('Session code copied to clipboard!');
         })
         .catch(err => {
             console.error('Could not copy text: ', err);
