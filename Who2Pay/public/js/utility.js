@@ -19,7 +19,7 @@ function readAmount(amountString) {
         numericalAmount = parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
     }
 
-    return numericalAmount;
+    return numericalAmount || 0;
 }
 
 // Function to format date as (D)D Month YYYY

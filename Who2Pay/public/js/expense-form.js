@@ -6,6 +6,8 @@ const people = ["John Doe", "Mary Jane", "Gary Stu", "Bjarne Stroustrup"];
 const payeeAmountsPaid = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts paid by each payee
 const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts to be paid by each payer
 
+let payeeCustomAmounts = [0.00, 0.00, 0.00, 0.00]; // Array to hold custom amount paid input by user
+
 function populateInitialData() { 
 	// @TODO - if coming from the expense list page, should populate the fields with the transaction details
 
@@ -42,23 +44,49 @@ function calculateTotal() {
 	validateForm();
 }
 
+function handlePayeeAmountChange(changedInput) {
+    const splitMethod = document.getElementById('payeeSplitMethod').value;
+    if (splitMethod === 'Custom Amounts') {
+        // Update the changed amount
+        const changedIndex = changedInput.dataset.index;
+        const changedValue = readAmount(changedInput.value) || 0;
+		const amountElement = document.querySelector(`.payee-amount-display[data-index="${changedIndex}"]`);
+        
+        payeeCustomAmounts[changedIndex] = changedValue === 0 ? -1 : changedValue;
+		payeeAmountsPaid[changedIndex] = changedValue;
+        amountElement.textContent = `$${formatAmount(changedValue)}`;
+        
+		updatePayeeAmounts();
+    }
+}
+
 // Function to update payee amounts in equal split
 function updatePayeeAmounts() {
-	const splitMethod = document.getElementById('payeeSplitMethod').value;
+	const splitMethod = document.getElementById('payeeSplitMethod').value;	
+	const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
+	
 	if (splitMethod === 'Equal Amounts') {
-		const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 		const selectedPayees = document.querySelectorAll('.payee-participation:checked');
 		const countSelectedPayees = selectedPayees.length;
 		
 		if (countSelectedPayees > 0) {
-			const amountPerPayee = finalTotal / countSelectedPayees;
-			
+			const baseAmountPerPayee = finalTotal / countSelectedPayees;
+			let remainder = finalTotal % countSelectedPayees;
 			// Update all payee amount displays
 			document.querySelectorAll('.payee-participation').forEach(checkbox => {
 				const index = checkbox.dataset.index;
 				const amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
 				
 				if (checkbox.checked) {
+					let amountPerPayee = baseAmountPerPayee;
+					
+					// add extra cents to remainders
+					if(remainder > 0)
+					{
+						amountPerPayee += 1;
+						remainder--;
+					}
+
 					amountElement.textContent = `$${formatAmount(amountPerPayee)}`;
 					payeeAmountsPaid[index] = amountPerPayee; // Update the payee amounts array
 				} else {
@@ -68,13 +96,81 @@ function updatePayeeAmounts() {
 			});
 		}
 	} 
+	else {
+		const payeeInputs = document.querySelectorAll('.payee-amount');
+		let customAmountSum = 0;
+		let adjustablePayees  = 0;
+		
+		payeeInputs.forEach((input, index) => {
+			const amount = readAmount(input.value) || 0;
+			// If payee custom amount is set
+			if (payeeCustomAmounts[index] > 0) {
+				customAmountSum += payeeCustomAmounts[index];
+			}
+			else if(payeeCustomAmounts[index] === 0)
+			{				
+				adjustablePayees++;
+			}
+			index++;
+		});
+
+		// Calculate remaining amount to distribute
+		const remainingAmount = Math.max(0, finalTotal - customAmountSum);
+		const baseAmountPerPayee = remainingAmount / adjustablePayees;
+		let remainder = remainingAmount % adjustablePayees;
+
+		console.log("finalTotal: ", finalTotal);
+console.log("customAmountSum: ", customAmountSum);
+console.log("remainingAmount: ", remainingAmount);
+
+		// Distribute remaining amount among adjustable payees
+		if (adjustablePayees > 0) {
+			
+			payeeInputs.forEach((input, index) => {
+				// Only adjust zero custom amounts and ignore payee with zero amount to pay
+				if (payeeCustomAmounts[index] === 0) {
+
+					let amountPerPayee = baseAmountPerPayee;
+					
+					// add extra cents to remainders
+					if(remainder > 0)
+					{
+						amountPerPayee += 1;
+						remainder--;
+					}
+
+					input.value = formatAmount(amountPerPayee);					
+					payeeAmountsPaid[index] = amountPerPayee;					
+					amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
+					amountElement.textContent = `$${formatAmount(amountPerPayee)}`;
+				}
+			});
+		}
+		else {
+			payeeInputs.forEach((input, index) => {
+				
+				// Only adjust zero custom amounts and ignore payee with zero amount to pay
+				if (payeeCustomAmounts[index] === 0) {
+					input.value = formatAmount(amountPerPayee);					
+					payeeAmountsPaid[index] = amountPerPayee;					
+					amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
+					amountElement.textContent = `$${formatAmount(amountPerPayee)}`;
+				}
+			});
+		}
+
+		console.log("payee custom amount: ", payeeCustomAmounts);
+		console.log("payee amounts paid: ", payeeAmountsPaid);
+	}
+
+	validateForm();
 }
 
 // Function to validate the form
 function validateForm() {
 	const saveButton = document.getElementById('submit');
 	const expenseName = document.getElementById('expenseName').value.trim();
-	const finalTotal = parseFloat(document.getElementById('finalTotal').value) || 0;
+	const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
 	const payerSplitMethod = document.getElementById('payerSplitMethod').value;
 	
@@ -98,6 +194,7 @@ function validateForm() {
 	// Check payee amounts based on split method
 	if (payeeSplitMethod === 'Custom Amounts') {
 		const payeeTotal = calculatePayeeTotal();
+			
 		if (Math.abs(payeeTotal - finalTotal) > 0.01) { // Allow small rounding differences
 			isValid = false;
 			payeeErrorMessage.style.display = 'block';
@@ -173,7 +270,8 @@ function updatePayerAmounts() {
 		const countSelectedPayers = selectedPayers.length;
 		
 		if (countSelectedPayers > 0) {
-			const amountPerPayer = finalTotal / countSelectedPayers;
+			const baseAmountPerPayer = finalTotal / countSelectedPayers;
+			let remainder = finalTotal % countSelectedPayers;
 			
 			// Update all payer amount displays
 			document.querySelectorAll('.payer-participation').forEach(checkbox => {
@@ -181,6 +279,15 @@ function updatePayerAmounts() {
 				const amountElement = document.querySelector(`.payer-amount[data-index="${index}"]`);
 				
 				if (checkbox.checked) {
+					let amountPerPayer = baseAmountPerPayer;
+					
+					// add extra cents to remainders
+					if(remainder > 0)
+					{
+						amountPerPayer += 1;
+						remainder--;
+					}
+
 					amountElement.textContent = `$${formatAmount(amountPerPayer)}`;
 					payerAmountsToPay[index] = amountPerPayer; // Update the payer amounts array
 				} else {
@@ -191,6 +298,7 @@ function updatePayerAmounts() {
 		}
 	} 
 	
+	console.log("payer amounts to pay: ", payerAmountsToPay);
 	// Validate the form
 	validateForm();
 }
@@ -245,6 +353,33 @@ function populatePayees() {
 		// Initial update for equal amounts
 		updatePayeeAmounts();
 	} else {
+		const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
+		const payeeInputs = document.querySelectorAll('.payee-amount');
+		const payeeCount = payeeInputs.length;
+		
+		if (payeeCount > 0) {
+			const equalAmount = finalTotal / payeeCount;
+			const baseAmountPerPayee = finalTotal / payeeCount;
+			let remainder = finalTotal % payeeCount;
+
+			payeeInputs.forEach((input, index) => {
+				let amountPerPayee = baseAmountPerPayee;
+					
+				// add extra cents to remainders
+				if(remainder > 0)
+				{
+					amountPerPayee += 1;
+					remainder--;
+				}
+				input.value = formatAmount(equalAmount);
+				payeeAmountsPaid[index] = equalAmount;
+				const amountElement = document.querySelector(`.payee-amount-display[data-index="${index}"]`);
+				amountElement.textContent = `$${formatAmount(equalAmount)}`;
+			});
+		}
+
+		payeeCustomAmounts = [0.00, 0.00, 0.00, 0.00];
+
 		document.querySelectorAll('.payee-amount').forEach(input => {
 			input.addEventListener('input', function() {
     
@@ -255,6 +390,7 @@ function populatePayees() {
 					input.value = parts[0] + '.' + parts.slice(1).join('');
 				}
 				
+				handlePayeeAmountChange(this);
 				// Custom amounts logic
 				const index = input.dataset.index;
 				const amount = readAmount(input.value) || 0;
