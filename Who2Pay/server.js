@@ -46,7 +46,7 @@ app.use('/createGroup', createGroupRoutes);
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'expense-create.html'));
+  res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
 });
 
 // Protected route example

@@ -2,6 +2,8 @@ const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
+const dbUsers = require('../config/dbUsers'); // Assuming you have a separate db connection for users
+const dbGroup = require('../config/dbGroup'); // Assuming you have a separate db connection for groups
 
 const router = express.Router();
 
@@ -74,6 +76,47 @@ router.get('/status', (req, res) => {
   } else {
     res.json({ isAuthenticated: false });
   }
+});
+
+
+router.post('/checkGroupValid', async (req, res) =>
+{
+    const { groupName, groupPassword } = req.body;
+    // Validate input
+    if (!groupName || !groupPassword) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+    const hashedPassword = await bcrypt.hash(groupPassword, 12);
+    // check if group and password is valid
+    const [targetGroup] = await 
+    dbGroup.query(
+      'SELECT id FROM groups_table WHERE group_name = ? AND group_password = ?', 
+      [groupName, groupPassword], 
+      // errors
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Server error' });
+        }
+        return results;
+      }
+    );
+    // check if group exists
+    if (targetGroup.length === 0) 
+    {
+        return res.status(400).json({ message: 'Group name or password is incorrect' });
+    }
+    // parse groupId
+    const parsedGroupId = targetGroup[0].id;
+
+    // group is valid, redirect to member login page
+    // set cookie for group id, pw for authentication
+    res.cookie("groupId", parsedGroupId);
+    res.cookie("authToken", hashedPassword); // Set the cookie with the group ID so we can use it later
+    // these already set it in the browser, so no need to set it again
+
+
+    return res.status(201).json({ message: 'Successfully logged into group!' });  
 });
 
 module.exports = router;

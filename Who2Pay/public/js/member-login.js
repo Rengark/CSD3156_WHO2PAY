@@ -100,7 +100,11 @@ if (dropdown) {
 }
 
 //add exit authentication here @junwei
-function logout() {
+function logout() 
+{
+    //clear cookies
+    document.cookie = "groupId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Clear groupId cookie
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Clear authToken cookie
     window.location.href = "/landingpage";
 }
 
@@ -127,3 +131,43 @@ var joinbtn = document.getElementById('join')
 if (joinbtn) {
     joinbtn.addEventListener('pointerdown', login);
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus();
+
+    async function checkAuthStatus() {
+        try {
+            // check cookies for group id and auth token
+            let groupId = null;
+            let authToken = null;
+            // Check if cookies are set
+            document.cookie.split('; ').forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'groupId') 
+                {
+                    groupId = value;
+                } else if (name === 'authToken') {
+                    authToken = value;
+                }
+            });
+            // Check if the user is authenticated
+            if (groupId && authToken) {
+                // User is authenticated, proceed to member login
+                // can stay on page
+            } else {
+                // User is not authenticated, show error message or redirect to login page
+                console.log('User is not authenticated');
+                console.log(groupId? groupId : "No group ID found in cookies");
+                console.log(authToken? authToken : "No auth token found in cookies");
+                console.log(document.cookie);
+                // Redirect to landing page
+                window.location.href = '/landingpage'; // Uncomment this line to redirect to login page
+            }
+        } catch (error) {
+            console.error('Error checking authentication status:', error);
+        }
+    }
+});
+
+
