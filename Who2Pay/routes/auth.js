@@ -91,7 +91,7 @@ router.post('/checkGroupValid', async (req, res) =>
     const [targetGroup] = await 
     dbGroup.query(
       'SELECT id FROM groups_table WHERE group_name = ? AND group_password = ?', 
-      [groupName, groupPassword], 
+      [groupName, groupPassword],  // @TODO REMEMBER TO HASH PASSWORD
       // errors
       (err, results) => {
         if (err) {
