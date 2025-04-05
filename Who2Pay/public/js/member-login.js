@@ -53,7 +53,7 @@ function OnPageLoadGetUsers()
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            //console.log(data);
             if (data.password_enforced) {
                 password_enforced = Boolean(data.password_enforced); // Set password_enforced from response
             }
@@ -68,7 +68,7 @@ function OnPageLoadGetUsers()
                         grpowner = member.name; // Set grpowner if the member is the owner
                     }
                 });
-                console.log('Members:', members);
+                //console.log('Members:', members);
             } else {
                 console.error('No members found in response');
             }
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const messageDiv = document.getElementById('message');
                 messageDiv.textContent = data.message;
                 messageDiv.className = 'error';
-                console.log(username, password, groupId, password_enforced, needRegister, isOwner);
+                //console.log(username, password, groupId, password_enforced, needRegister, isOwner);
             }
         });
     }

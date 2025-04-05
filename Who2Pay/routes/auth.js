@@ -129,7 +129,7 @@ router.post('/checkGroupValid', async (req, res) =>
 
 router.post('/memberLogin', async (req, res) => {
     const { username, password, groupId, password_enforced, needRegister , isOwner } = req.body;
-    console.log("enforced", password_enforced);
+    //console.log("enforced", password_enforced);
     // if not enforced, no need to check password
     if (password_enforced === false) 
     {
@@ -180,10 +180,10 @@ router.post('/memberLogin', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user[0].password);
         if (!isMatch) 
         {
-          console.log("password not match");
+          //console.log("password not match");
           return res.status(400).json({ message: 'Incorrect password' });
         }
-        console.log("password match");
+        //console.log("password match");
         // Successful login
         res.cookie("username", username); // Set the cookie with the username so we can use it later
         return res.status(201).json({ message: 'Login successful' });
