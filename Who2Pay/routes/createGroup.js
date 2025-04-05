@@ -55,12 +55,15 @@ router.post('/register', async (req, res) => {
         for (const member of parsedMembers) {
             await dbUsers.query(
                 'INSERT INTO user_profiles (group_id, name, owner) VALUES (?, ?, ?)',
-                [parsedGroupId, member.name, false]
+                [parsedGroupId, member, false]
             );
         } // password will not be inlcuded, initially, set by users
-        router.cookie = "groupId=" + parsedGroupId + "; path=/;"; // Set the cookie with the group ID so we can use it later
         // Set the cookie with the group ID so we can use it later
-
+        res.cookie('groupId', parsedGroupId);
+        res.cookie('groupName', groupName);
+        res.cookie('authToken', hashedPassword);
+        res.cookie('password_enforced', passwordRequired);
+        router.cookie = `groupId=${parsedGroupId}`; // Set the cookie with the group ID so we can use it later
         res.status(201).json({ message: 'Group registered successfully' });
     } catch (error) {
         console.error(error);
@@ -115,7 +118,10 @@ router.post('/registerOwner', async (req, res) => {
             );
             // delete cookie
             router.cookie = `groupId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-
+            
+            // set cookie for owner
+            res.cookie('username', username);
+            res.cookie('ownerToken', hashedPassword); // set cookie for owner authentication
             res.status(200).json({ message: 'Owner registered successfully' });
         } catch (error) 
         {

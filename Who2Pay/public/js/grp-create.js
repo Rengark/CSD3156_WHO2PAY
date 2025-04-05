@@ -1,6 +1,9 @@
 let members = [];
 //empty owner to be set later
 let owner = "";
+let groupName = null;
+let groupPassword = null;
+let memberPassword = null;
 
 function showAddMemberInput() {
     const container = document.getElementById("addMemberContainer");
@@ -73,6 +76,10 @@ function switchToGroupOwnerUI() {
 
     document.getElementById("createGroupUI").style.display = "none";
     document.getElementById("groupOwnerUI").style.display = "block";
+
+    groupName = document.getElementById('groupname').value;
+    groupPassword = document.getElementById('grouppassword').value;
+    memberPassword = document.getElementById('makepassword').checked ? 'on' : 'off';
     
     const nameDropdown = document.getElementById("ownername");
     nameDropdown.innerHTML = "";
@@ -91,6 +98,7 @@ function switchToGroupOwnerUI() {
 }
 
 function goBackToCreateGroup() {
+    
     document.getElementById("groupOwnerUI").style.display = "none";
     document.getElementById("createGroupUI").style.display = "block";
 }
@@ -125,15 +133,89 @@ if(et.length > 0) {
 
 
 //@junwei this is all the values need to be saved in the db after submit is clicked
-function createGroup()
-{
-    const groupName = document.getElementById("groupName").value.trim();
-    const groupPassword = document.getElementById("groupPassword").value.trim();
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const createGroupForm = document.getElementById('set-owner-form');
+    if (createGroupForm) 
+    {
+        createGroupForm.addEventListener('submit', async function(e) 
+        {
+            try{
+                e.preventDefault();
+                const nameDropdown = document.getElementById("ownername");
+                owner = nameDropdown.options[nameDropdown.selectedIndex].value;
+                const ownerpassword = document.getElementById("ownerpassword").value.trim();
+                const parsedMembers = members.map(member => member.trim()).filter(member => member !== '');
+                //member is the array for getting the list of people initially in the group
+                const response = await fetch('/createGroup/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ groupName, groupPassword, memberPassword, members_table: parsedMembers })
+                })
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    const messageDiv = document.getElementById('message');
+                    if (messageDiv) 
+                    {   
+                        messageDiv.textContent = data.message;
+                        messageDiv.className = 'error';
+                    }
+                    else
+                    {
+                        console.error('Message div not found');
+                        console.log(data.message);
+                        console.log(groupName, groupPassword, memberPassword);
+                    }
+                    return;
+                }
 
-    const nameDropdown = document.getElementById("ownername");
-    owner = nameDropdown.options[nameDropdown.selectedIndex].value;
-    const ownerpassword = document.getElementById("ownerPassword").value.trim();
+                
 
-    //member is the array for getting the list of people initially in the group
+                const response2 = await fetch('/createGroup/registerOwner', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: owner, password: ownerpassword })
+                })
+                const data2 = await response2.json();
+                if (response2.ok) {
+                    
+                    // const messageDiv = document.getElementById('message');
+                    //     messageDiv.textContent = data2.message;
+                    //     messageDiv.className = 'success';
+                        
 
-}
+                        // cookies have been set for authentication, now we need to set nothing for the owner
+
+                        // Redirect to registration page after successful group creation
+                        setTimeout(() => {
+                            window.location.href = '/expense-list';
+                        }, 2000);
+                }
+                else {
+                    const messageDiv = document.getElementById('message');
+                    if (messageDiv) {
+                        messageDiv.textContent = data2.message;
+                        messageDiv.className = 'error';
+                    }
+                    else
+                    {
+                        console.error('Message div not found');
+                        console.log(data2.message);
+                        console.log(owner, ownerpassword);
+                    }
+                }
+            }
+            catch (error) {
+                console.error('Error:', error);
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'An error occurred. Please try again.';
+                messageDiv.className = 'error';
+            }
+        });
+    }
+});
