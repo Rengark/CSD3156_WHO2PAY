@@ -55,7 +55,7 @@ function OnPageLoadGetUsers()
         .then(data => {
             console.log(data);
             if (data.password_enforced) {
-                password_enforced = data.password_enforced; // Set password_enforced from response
+                password_enforced = Boolean(data.password_enforced); // Set password_enforced from response
             }
             
             if (data.members) {
@@ -134,13 +134,20 @@ function checkFirstTimeUser()
     const passwordField = document.getElementById("memberPasswordContainer");
     const newUserPasswordField = document.getElementById("newMemberPasswordContainer");
 
-    if (isFirstTimeUser) {
+    if (isFirstTimeUser && password_enforced) {
         passwordField.style.display = "none";
         newUserPasswordField.style.display = "block";
-    } else {
+    }
+    else if (grpowner === selectedValue || password_enforced) {
         passwordField.style.display = "block";
         newUserPasswordField.style.display = "none";
     }
+    else  {
+        
+        passwordField.style.display = "none";
+        newUserPasswordField.style.display = "none";
+    }
+    
 }
 
 var dropdown = document.getElementById("username");
@@ -199,8 +206,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const passwords = document.getElementsByClassName("pswd");
             const needRegister = firsttimeusers[index]; // Check if the user is a first-time user
 
-            const password = needRegister? passwords[1].value : passwords[0].value; // Get the password value
-            
+            let password = needRegister? passwords[1].value : passwords[0].value; // Get the password value
+            if (!password)
+            {
+                password = null; // Set password to null if not provided
+            }
             const isOwner = username === grpowner; // Check if the user is the owner
             // Send
             const response = await fetch('/auth/memberLogin', {
@@ -225,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const messageDiv = document.getElementById('message');
                 messageDiv.textContent = data.message;
                 messageDiv.className = 'error';
+                console.log(username, password, groupId, password_enforced, needRegister, isOwner);
             }
         });
     }
@@ -242,11 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (name === 'authToken') {
                     authToken = value;
                 } else if (name === 'password_enforced') {
-                    password_enforced = value;
+                    password_enforced = Boolean(parseInt(value, 10));
                 }
             });
             // Check if the user is authenticated
-            if (groupId && authToken && password_enforced) {
+            if (groupId && authToken) {
                 // User is authenticated, proceed to member login
                 // can stay on page
             } else {

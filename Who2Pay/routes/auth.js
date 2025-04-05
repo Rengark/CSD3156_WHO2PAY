@@ -90,8 +90,8 @@ router.post('/checkGroupValid', async (req, res) =>
     // check if group and password is valid
     const [targetGroup] = await 
     dbGroup.query(
-      'SELECT * FROM groups_table WHERE group_name = ? AND group_password = ?', 
-      [groupName, hashedPassword],  // @TODO REMEMBER TO HASH PASSWORD
+      'SELECT * FROM groups_table WHERE group_name = ?', 
+      groupName,  // @TODO REMEMBER TO HASH PASSWORD
       // errors
       (err, results) => {
         if (err) {
@@ -104,8 +104,14 @@ router.post('/checkGroupValid', async (req, res) =>
     // check if group exists
     if (targetGroup.length === 0) 
     {
-        return res.status(400).json({ message: 'Group name or password is incorrect' });
+        return res.status(400).json({ message: 'Group name is incorrect' });
     }
+    const isMatch = await bcrypt.compare(groupPassword, targetGroup[0].group_password);
+    if (!isMatch) 
+    {
+        return res.status(400).json({ message: 'Group password is incorrect' });
+    }
+
     // parse groupId
     const parsedGroupId = targetGroup[0].id;
 
@@ -123,6 +129,22 @@ router.post('/checkGroupValid', async (req, res) =>
 
 router.post('/memberLogin', async (req, res) => {
     const { username, password, groupId, password_enforced, needRegister , isOwner } = req.body;
+    console.log("enforced", password_enforced);
+    // if not enforced, no need to check password
+    if (password_enforced === false) 
+    {
+      const [user] = await dbUsers.query(
+          'SELECT * FROM user_profiles WHERE name = ? AND group_id = ?',
+          [username, groupId]
+      );
+      
+      if (user.length === 0) {
+          return res.status(400).json({ message: 'User not found in the group' });
+      }
+      res.cookie("username", username); // Set the cookie with the username so we can use it later
+      return res.status(201).json({ message: 'Login successful' });
+    }
+
     // Validate input
     if (!username || (password_enforced && !password)) {
         return res.status(400).json({ message: 'All fields are required' });

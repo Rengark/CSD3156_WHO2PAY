@@ -111,10 +111,10 @@ router.post('/registerOwner', async (req, res) => {
             // Hash password
             const hashedPassword = await bcrypt.hash(password, 12);
         
-            // Create owner
+            // update owner
             await dbUsers.query(
-                'INSERT INTO user_profiles (group_id, name, owner, password) VALUES (?, ?, ?, ?)',
-                [parsedGroupId, username, true, hashedPassword]
+                'UPDATE user_profiles SET owner = ?, password = ? WHERE group_id = ? AND name = ?',
+                [true, hashedPassword, parsedGroupId, username]
             );
             // delete cookie
             router.cookie = `groupId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
