@@ -1,5 +1,12 @@
 //const { format } = require("../../config/db");
 
+// transaction info
+const testGroupId = 1;
+const testTransactionName = "Movies";
+const testPayeeSplitMethod = 'Custom Amounts';
+const testPayerSplitMethod = 'Equal Amounts';
+const testFinalTotal = 5600;
+
 // Sample list of people
 const people = ["John Doe", "Mary Jane", "Gary Stu", "Bjarne Stroustrup"];
 
@@ -8,9 +15,39 @@ const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts to 
 
 let payeeCustomAmounts = [0.00, 0.00, 0.00, 0.00]; // Array to hold custom amount paid input by user
 
-function populateInitialData() { 
-	// @TODO - if coming from the expense list page, should populate the fields with the transaction details
+const testUserProfiles = [
+{group_id: testGroupId, user_name: "John Doe"},
+{group_id: testGroupId, user_name: "Mary Jane"},
+{group_id: testGroupId, user_name: "Gary Stu"},
+{group_id: testGroupId, user_name: "Bjarne Stroustrup"}
+]
 
+function populateInitialData() { 
+
+	// Create test transaction data
+	const testTransaction = {
+		transaction_name: testTransactionName,
+		group_id: testGroupId,
+		payee_split_type: testPayeeSplitMethod,
+		payer_split_type: testPayerSplitMethod,
+		total_amount: testFinalTotal
+	}
+
+	// Create test transaction details
+	const testDetails = [
+		// Payees (who owed money)
+		{ payer_id: null, recipient_id_id: 0, amount: 10.00 }, // John Doe pays $10
+		{ payer_id: null, recipient_id: 1, amount: 5.00 },  // Mary Jane pays $5
+		// Payers (who paid money)
+		{ payer_id: 2, recipient_id: null, amount: 15.00 }  // Gary Stu gets $15
+	];
+
+	// Populate basic form fields
+	document.getElementById('expenseName').value = testTransaction.transaction_name;
+	document.getElementById('subtotal').value = formatAmount(testTransaction.total_amount);
+	//document.getElementById('additionalCharge').value = formatAmount(5.00);
+	document.getElementById('payeeSplitMethod').value = testTransaction.payee_split_type;
+	document.getElementById('payerSplitMethod').value = testTransaction.payer_split_type;
 }
 
 // Function to calculate the final total
@@ -303,14 +340,14 @@ function populatePayees() {
 	
 	const splitMethod = document.getElementById('payeeSplitMethod').value;
 	
-	people.forEach((person, index) => {
+	testUserProfiles.forEach((testUserProfiles, index) => {
 		const row = document.createElement('div');
 		row.className = 'person-row';
 		
 		if (splitMethod === 'Equal Amounts') {
 			row.innerHTML = `
 				<div class="payee-info">
-					<div class="person-name">${person}</div>
+					<div class="person-name">${testUserProfiles.user_name}</div>
 					<div class="payee-amount-display" data-index="${index}">\$0.00</div>
 				</div>
 				<div class="person-amount">
@@ -320,7 +357,7 @@ function populatePayees() {
 		} else { // Custom Amounts
 			row.innerHTML = `
 				<div class="payee-info">
-					<div class="person-name">${person}</div>
+					<div class="person-name">${testUserProfiles.user_name}</div>
 					<div class="payee-amount-display" data-index="${index}">\$0.00</div>
 				</div>
 				<div class="person-amount">
@@ -420,14 +457,14 @@ function populatePayers() {
 	
 	const splitMethod = document.getElementById('payerSplitMethod').value;
 	
-	people.forEach((person, index) => {
+	testUserProfiles.forEach((testUserProfiles, index) => {
 		const row = document.createElement('div');
 		row.className = 'person-row';
 		
 		if (splitMethod === 'Equal Amounts') {
 			row.innerHTML = `
 				<div class="payer-info">
-					<div class="person-name">${person}</div>
+					<div class="person-name">${testUserProfiles.user_name}</div>
 					<div class="payer-amount" data-index="${index}">\$0.00</div>
 				</div>
 				<div class="person-amount">
@@ -437,7 +474,7 @@ function populatePayers() {
 		} else { // Custom Amounts
 			row.innerHTML = `
 				<div class="payer-info">
-					<div class="person-name">${person}</div>
+					<div class="person-name">${testUserProfiles.user_name}</div>
 					<div class="payer-amount" data-index="${index}">$${formatAmount(payerAmountsToPay[index])}</div>
 				</div>
 				<div class="person-amount">
@@ -515,14 +552,15 @@ function saveExpense() {
 	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
 	const payerSplitMethod = document.getElementById('payerSplitMethod').value;
 
-	// use test group id for now
-	const testGroupId = 1;
+
 
 	// create transaction object for this expense
 	const transactionData = {
-		groupId: testGroupId,
-		splitType: `${payeeSplitMethod}/${payerSplitMethod}`,
-		totalAmount: finalTotal
+		transaction_name: testTransactionName,
+		group_id: testGroupId,
+		payee_split_type: payeeSplitMethod,
+		payer_split_type: payerSplitMethod,
+		total_amount: finalTotal
 	}
 
 	// create transactionDetails
@@ -532,8 +570,8 @@ function saveExpense() {
 		// only include payees with amount > 0
 		if(amount > 0) {
 			transactionDetails.push({
-				payerId: null, // participants don't pay
-				participantId: index,
+				payer_id: null, // participants don't pay
+				recipient_id: index,
 				amount: amount
 			});
 		}
@@ -542,8 +580,8 @@ function saveExpense() {
 	payerAmountsToPay.forEach((amount, index) => {
 		if(amount > 0) {
 			transactionDetails.push({
-				payerId: index,
-				participantId: null,
+				payer_id: index,
+				recipient_id: null,
 				amount: amount
 			})
 		}
@@ -589,9 +627,16 @@ document.getElementById('return').addEventListener('pointerdown', backButtonPres
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
+	
+	// Check if in edit mode
+	const urlParams = new URLSearchParams(window.location.search);
+	const isEditMode = urlParams.has('transaction_id');
+
 	populatePayees();
 	populatePayers();
-	populateInitialData(); // @TODO - if coming from the expense list page, should populate the fields with the transaction details
+	if(isEditMode) {
+		populateInitialData();
+	}
 	calculateTotal();
 	validateForm();
 });
