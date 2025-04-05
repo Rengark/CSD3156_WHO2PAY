@@ -2,9 +2,9 @@
   "name": "who2pay",
   "version": "1.0.0",
   "description": "Base Project for Who2Pay",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
-    "start": "",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
