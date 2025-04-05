@@ -119,10 +119,6 @@ function updatePayeeAmounts() {
 		const baseAmountPerPayee = remainingAmount / adjustablePayees;
 		let remainder = remainingAmount % adjustablePayees;
 
-		console.log("finalTotal: ", finalTotal);
-console.log("customAmountSum: ", customAmountSum);
-console.log("remainingAmount: ", remainingAmount);
-
 		// Distribute remaining amount among adjustable payees
 		if (adjustablePayees > 0) {
 			
@@ -158,9 +154,6 @@ console.log("remainingAmount: ", remainingAmount);
 				}
 			});
 		}
-
-		console.log("payee custom amount: ", payeeCustomAmounts);
-		console.log("payee amounts paid: ", payeeAmountsPaid);
 	}
 
 	validateForm();
