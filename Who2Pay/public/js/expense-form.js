@@ -50,6 +50,13 @@ function populateInitialData() {
 	document.getElementById('payerSplitMethod').value = testTransaction.payer_split_type;
 }
 
+function populateLastEditMessage() { 
+	// @TODO - if coming from the expense list page, should populate with a message abt the last person that edited the expense
+	lastEditElement = document.getElementById('lastEdit');
+	let name = "John Doe";
+	lastEditElement.textContent = `Last edited by ${name}`
+}
+
 // Function to calculate the final total
 function calculateTotal() {
 	subtotalElement = document.getElementById('subtotal');
@@ -636,6 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	populatePayers();
 	if(isEditMode) {
 		populateInitialData();
+		populateLastEditMessage();
 	}
 	calculateTotal();
 	validateForm();
