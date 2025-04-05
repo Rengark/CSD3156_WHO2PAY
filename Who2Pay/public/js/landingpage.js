@@ -64,10 +64,10 @@ document.addEventListener('DOMContentLoaded', function()  {
                     
                     
                     //redirect to member login page
-                    // delay for 2 seconds before redirecting
+                    // delay for 1 seconds before redirecting
                     setTimeout(() => {
                         window.location.href = "/member-login"; //change to groupId from db
-                    }, 2000);
+                    }, 1000);
                 } 
                 else 
                 {

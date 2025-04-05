@@ -10,6 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const createGroupRoutes = require('./routes/createGroup');
 
+
 // Initialize app
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,7 @@ require('./config/passport');
 // Routes
 app.use('/auth', authRoutes);
 app.use('/createGroup', createGroupRoutes);
+app.use('/query', require('./routes/query')); // Assuming you have a query route
 
 // Route to serve the login page
 app.get('/', (req, res) => {

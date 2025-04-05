@@ -90,7 +90,7 @@ router.post('/checkGroupValid', async (req, res) =>
     // check if group and password is valid
     const [targetGroup] = await 
     dbGroup.query(
-      'SELECT id FROM groups_table WHERE group_name = ? AND group_password = ?', 
+      'SELECT * FROM groups_table WHERE group_name = ? AND group_password = ?', 
       [groupName, groupPassword],  // @TODO REMEMBER TO HASH PASSWORD
       // errors
       (err, results) => {
@@ -113,10 +113,41 @@ router.post('/checkGroupValid', async (req, res) =>
     // set cookie for group id, pw for authentication
     res.cookie("groupId", parsedGroupId);
     res.cookie("authToken", hashedPassword); // Set the cookie with the group ID so we can use it later
+    res.cookie("password_enforced", targetGroup[0].password_enforced); // Set the cookie with the group ID so we can use it later
     // these already set it in the browser, so no need to set it again
 
 
     return res.status(201).json({ message: 'Successfully logged into group!' });  
+});
+
+
+router.post('/memberLogin', async (req, res) => {
+    const { username, password } = req.body;
+    // Validate input
+    if (!username || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+    
+    // Check if user exists in the group
+    const [user] = await dbUsers.query(
+        'SELECT * FROM user_profiles WHERE name = ? AND group_id = ?',
+        [username, req.cookies.groupId]
+    );
+    
+    if (user.length === 0) {
+        return res.status(400).json({ message: 'User not found in the group' });
+    }
+    
+    // Check password if enforced
+    if (req.cookies.password_enforced === '1') {
+        const isMatch = await bcrypt.compare(password, user[0].password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Incorrect password' });
+        }
+    }
+    
+    // Successful login
+    res.json({ message: 'Login successful', user: { id: user[0].id, username: user[0].name } });
 });
 
 module.exports = router;
