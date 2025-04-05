@@ -176,18 +176,15 @@ function login()
     window.location.href = "/expense-list";
 }
 
-var joinbtn = document.getElementById('join')
-if (joinbtn) {
-    joinbtn.addEventListener('pointerdown', login);
-}
+// var joinbtn = document.getElementById('join')
+// if (joinbtn) {
+//     joinbtn.addEventListener('pointerdown', login);
+// }
 
 
 document.addEventListener('DOMContentLoaded', function() {
     // check authentication status on page load
     // will redirect to landing page if not authenticated
-    
-
-
     checkAuthStatus();
     
     // Add event listener to the form submission
@@ -198,17 +195,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Get the values from the form
             const username = document.getElementById('username').value;
-            let password = null; // Assuming the password field is the first one
+            const index = members.indexOf(username);
+            const passwords = document.getElementsByClassName("pswd");
+            const needRegister = firsttimeusers[index]; // Check if the user is a first-time user
 
-
+            const password = needRegister? passwords[1].value : passwords[0].value; // Get the password value
+            
+            const isOwner = username === grpowner; // Check if the user is the owner
             // Send
             const response = await fetch('/auth/memberLogin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password, groupId, authToken, password_enforced, isOwner })
+                body: JSON.stringify({ username, password, groupId, password_enforced, needRegister, isOwner })
             });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Successful login, redirect to the expense list page
+                // delay 1 second before redirecting
+                setTimeout(() => {
+                    window.location.href = '/expense-list'; // Redirect to expense list page
+                }, 1000);
+            }
+            else {
+                // Handle error response
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = data.message;
+                messageDiv.className = 'error';
+            }
         });
     }
 

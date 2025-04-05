@@ -91,7 +91,7 @@ router.post('/checkGroupValid', async (req, res) =>
     const [targetGroup] = await 
     dbGroup.query(
       'SELECT * FROM groups_table WHERE group_name = ? AND group_password = ?', 
-      [groupName, groupPassword],  // @TODO REMEMBER TO HASH PASSWORD
+      [groupName, hashedPassword],  // @TODO REMEMBER TO HASH PASSWORD
       // errors
       (err, results) => {
         if (err) {
@@ -122,16 +122,16 @@ router.post('/checkGroupValid', async (req, res) =>
 
 
 router.post('/memberLogin', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, groupId, password_enforced, needRegister , isOwner } = req.body;
     // Validate input
-    if (!username || !password) {
+    if (!username || (password_enforced && !password)) {
         return res.status(400).json({ message: 'All fields are required' });
     }
     
     // Check if user exists in the group
     const [user] = await dbUsers.query(
         'SELECT * FROM user_profiles WHERE name = ? AND group_id = ?',
-        [username, req.cookies.groupId]
+        [username, groupId]
     );
     
     if (user.length === 0) {
@@ -139,15 +139,36 @@ router.post('/memberLogin', async (req, res) => {
     }
     
     // Check password if enforced
-    if (req.cookies.password_enforced === '1') {
+    if (password_enforced || isOwner) 
+    {
+      if (needRegister) 
+      {
+          // If the user is a first-time user, register them
+          const hashedPassword = await bcrypt.hash(password, 12);
+          await dbUsers.query(
+              'UPDATE user_profiles SET password = ? WHERE name = ? AND group_id = ?',
+              [hashedPassword, username, groupId]
+          );
+          // Successful login
+          res.cookie("username", username); // Set the cookie with the username so we can use it later
+          return res.status(201).json({ message: 'Login successful' });
+      }
+      else
+      {
         const isMatch = await bcrypt.compare(password, user[0].password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Incorrect password' });
+        if (!isMatch) 
+        {
+          console.log("password not match");
+          return res.status(400).json({ message: 'Incorrect password' });
         }
+        console.log("password match");
+        // Successful login
+        res.cookie("username", username); // Set the cookie with the username so we can use it later
+        return res.status(201).json({ message: 'Login successful' });
+      }
     }
+    return res.status(400).json({ message: 'Incorrect password' });
     
-    // Successful login
-    res.json({ message: 'Login successful', user: { id: user[0].id, username: user[0].name } });
 });
 
 module.exports = router;
