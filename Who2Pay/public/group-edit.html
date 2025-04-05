@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>
+    <div id="createGroupUI" class="container">
+        <form id="register-form">
+        <button class="btn" id ="deleteGroup" type = "delete">🗑️</button>
+        <h1>Edit Group</h1>
+
+    
+            <div class="input-group">
+                <label for="groupname">Group Name</label>
+                <input type="text" id = "groupname" placeholder="Group Name">
+            </div>
+
+            <div class="input-group">
+                <label for="grouppassword">Group Password</label>
+                <div class="password-container">
+                    <input type="password" class="pswd" id = "grouppassword" placeholder="Password">
+                    <span class = "eyeToggle">🙈</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Members</label>
+            </div>
+
+            <div class="members-container" id="membersList">
+                <!-- Members will be added here dynamically -->
+            </div>
+
+            <div class="add-member-container" id="addMemberContainer"></div>
+
+            <button class="btn add" id="add">Add Members</button>
+
+        <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
+
+        <div class="buttons">
+            <button class="btn" id ="backbtn" type = "back">Back</button>
+            <button class="btn green" id = "save" type = "save">Save Group Settings</button>
+        </div>
+
+        <div class="confirm">
+            <div></div>
+            <div class = "test">
+              <div id="confirmMessage">Are you sure you want to delete the group?</div>
+                <p id="confirmWarning">This action cannot be undone.</p>
+              <div>
+                <input id="confirmYes" type="button" value="Yes" />
+                <input id="confirmNo" type="button" value="No" />
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+    </div>
+        <script src="/js/grp-edit.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>
+    <div id="createGroupUI" class="container">
+        <h1>Create Group</h1>
+        <p>Already have a group? <a href="/landingpage">Log in</a></p>
+        <form id="register-form">
+
+            <div class="input-group">
+                <label for="groupname">Group Name</label>
+                <input type="text" placeholder="Group Name" id = "groupname">
+            </div>
+
+            <div class="input-group">
+                <label for="grouppassword">Group Password</label>
+                <div class="password-container">
+                    <input type="password" class="pswd" id = "grouppassword" placeholder="Password">
+                    <span class = "eyeToggle">🙈</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Members</label>
+                <div type="makepassword">
+                    <input type="checkbox" id="makepassword" checked> Members should make passwords
+                </div>
+                <small>Note: The group owner will need a password even if the other members don’t</small>
+            </div>
+
+            <div class="members-container" id="membersList">
+                <!-- Members will be added here dynamically -->
+            </div>
+
+            <div class="add-member-container" id="addMemberContainer"></div>
+            <button class="btn add" id="add">Add Members</button>
+
+        <p class ="warning" id = "grpwarning" style="display: none;">You must atleast have a member to create a group!</p>
+
+        <div class="buttons">
+            <button class="btn green" id = "nxtstep">Next Step</button>
+        </div>
+        </form>
+    </div>
+
+     <!-- Set Group Owner UI -->
+     <div id="groupOwnerUI" class="container" style="display: none;">
+        <h1>Set Group Owner</h1>
+        <p>Forgot to add your name? <a href="#" class="backtocg">Go back</a></p>
+
+        <form id="set-owner-form">
+            <div class="input-group">
+            <label for="ownername">Owner Name</label>
+            <select id="ownername"></select>
+            </div>
+
+            <div class="input-group">
+            <label for="ownerpassword">Owner Password</label>
+            <div class="password-container">
+                <input type="password" class="pswd" placeholder="Password" id = "ownerpassword">
+                <span class = "eyeToggle">🙈</span>
+            </div>
+            </div>
+
+
+        <div></div>
+        <p><i>Note: Group ownership cannot be transferred later.</i></p>
+
+        <button id="create" class = "btn green" type ="submit">Create Group</button>
+    </form>
+    </div>
+
+        <script src="/js/grp-create.js"></script>
+</body>
+</html>

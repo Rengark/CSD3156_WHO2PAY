@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses App</title>
+    <link rel="stylesheet" href="/css/style-general.css">
+    <link rel="stylesheet" href="/css/style-expense-list.css">
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <button type="logout" id="logout" class="light-green">Log Out</button>
+            
+            <div class="nav-title">
+                <span id="groupNamePlaceholder"></span> Expenses
+            </div>
+            
+            <div class="session-container">
+                <span class="session-label">Session Code:</span>
+                <div class="code-container">
+                    <span class="session-code" id="sessionCode">A1B2C3</span>
+                    <button class="copy-btn" id="copyBtn" title="Copy to clipboard">
+                        <span class="material-icons">content_copy</span>
+                    </button>
+                </div>
+                <button type="navSettings" id="navSettings" class="light-green square-btn">
+                    <span class="material-icons">settings</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="main-container">
+        <div class="center-container">
+            <button class="light-green" type="navExpenseCreation" id="navExpenseCreation">Add Expense</button> <!--- Navigates to expense creation page -->
+            <button class="dark-green" type="navBalances" id="navBalances">Settle Up</button> <!--- Navigates to balances page -->
+        </div>
+    
+        <div class="expenses-container column-container " id="expensesContainer">
+            <!-- Expenses will be populated here by JavaScript -->
+        </div>
+    </div>
+    
+    <script src="/js/utility.js"></script>
+    <script src="/js/expense-list.js"></script>
+</body>
+</html>

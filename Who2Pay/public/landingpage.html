@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Group</title>
+    <link rel="stylesheet" href="/css/style-grp-create.css">
+</head>
+<body>
+     <div id="joingroupUI" class="container vertical-center" style="display: block;">
+        <h1>Join Group</h1>
+        <p>Don't have a group? <a id="creategrp" href="/group-create">Create one</a></p>
+        <form id="join-group-form">
+        <! -- group name --!>
+        <div class="input-group">
+            <label type="groupname">Group Session Code</label>
+            <input type="text" id = "groupname" placeholder="Group Session Code">
+        </div>
+
+        <! -- group password --!>
+        <div class="input-group">
+            <label type = "grouppassword">Group Password</label>
+            <div class="password-container">
+                <input type="password" class="pswd grouppassword" id = "grouppassword" placeholder="Password">
+                <span class = "eyeToggle">🙈</span>
+            </div>
+        </div>
+
+        <p class ="warning" id = "grpwarning" style="display: none;">Oops! The Session Code or Password entered was incorrect.</p>
+        <button id="join" class = "btn green" type = "submit">Join</button>
+    </form>
+    </div>
+
+        <script src="/js/landingpage.js"></script>
+</body>
+</html>
