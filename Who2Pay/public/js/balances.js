@@ -6,17 +6,25 @@
 // If the amount is positive, the user is owed money 
 function getBalanceSummary() {
 
-    // @TODO Brandon - Add query logic to retrieve all transactions the current user is involved in
-
-    // Amounts are stored as integers (cents) to avoid floating point issues
-    const balances = [
-        { id: 1111, name: "John Doe", amount: 0 },
-        { id: 2222, name: "Mary Jane", amount: -500 },
-        { id: 3333, name: "Gary Stu", amount: 270 },
-        { id: 4444, name: "Bjarne Stroustrup", amount: 0 }
-    ];
-
-    return balances;
+    return fetch('/query/getUserBalances', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: currentUserId })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch balances');
+        return response.json();
+      })
+      .then(balances => {
+        // Format balances (amounts in cents)
+        return balances.map(balance => ({
+          ...balance,
+          amount: Math.round(balance.amount * 100) // Convert to cents
+        }));
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 }
 
 // ID of the user currently logged in

@@ -220,4 +220,47 @@ router.post('/getAllTransactions', async (req, res) => {
     }
   });
 
+  router.post('/getUserBalances', async (req, res) => {
+    try {
+      const { user_id } = req.body;
+  
+      if (!user_id) {
+        return res.status(400).json({ error: 'User ID is required' });
+      }
+  
+      // Query to get all transactions where user is either payer or recipient
+      const [balances] = await dbTransactions.query(`
+        SELECT 
+          u.user_profile_id AS id,
+          u.name,
+          SUM(
+            CASE 
+              WHEN td.payer_id = ? THEN -td.amount  -- User paid this amount
+              WHEN td.recipient_id = ? THEN td.amount  -- User is owed this amount
+              ELSE 0
+            END
+          ) AS amount
+        FROM user_profiles u
+        LEFT JOIN transaction_details td ON 
+          (td.payer_id = u.user_profile_id OR td.recipient_id = u.user_profile_id)
+        LEFT JOIN transactions t ON td.transaction_id = t.transaction_id
+        WHERE u.user_profile_id IN (
+          SELECT DISTINCT payer_id FROM transaction_details WHERE recipient_id = ?
+          UNION
+          SELECT DISTINCT recipient_id FROM transaction_details WHERE payer_id = ?
+        )
+        GROUP BY u.user_profile_id, u.name
+      `, [user_id, user_id, user_id, user_id]);
+  
+      res.json(balances.map(b => ({
+        ...b,
+        amount: Number(b.amount) || 0 // Ensure amount is a number
+      })));
+  
+    } catch (error) {
+      console.error('Error fetching balances:', error);
+      res.status(500).json({ error: 'Database error' });
+    }
+  });
+
 module.exports = router;
