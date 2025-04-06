@@ -116,7 +116,14 @@ if (addButton) {
 
 function DeleteGroup()
 {
-
+    // run delete group query here
+    fetch('/query/deleteGroup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ groupID: groupId })
+    });
 }
 
 

@@ -2,13 +2,20 @@ let groupId = null;
 let authToken = null;
 let password_enforced = null;
 
+    // Helper function to get a cookie by name
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
 // ---------- NAVBAR ---------- //
 
 // This function initializes the navbar with the group name
 function initNavbar(groupName, groupCode) {
     // Set the group name in the navbar
     document.getElementById('groupNamePlaceholder').textContent = groupName;
-    document.getElementById('sessionCode').textContent = groupCode;
+    document.getElementById('sessionCode').textContent = groupName;
     
     // Add click event listener to the copy button
     document.getElementById('copyBtn').addEventListener('click', function() {
@@ -154,12 +161,57 @@ document.getElementById('navBalances').addEventListener('click', function() {
 //     // Add your logic to handle settling up
 // });
 
+// get group name and group code from route
+function GetGroupName()
+{
+    //check if group name cookie exists
+    const groupName = getCookie('groupName');
+
+
+    if (groupName) {
+        // If it exists, use it
+        return;
+    } 
+    // parse id form cookie
+    
+    // fetch route
+    fetch('/query/getGroupName', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ groupID: groupId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.groupName) {
+            // Set the group name cookie
+            document.cookie = `groupName=${data.groupName}; path=/`;
+            document.getElementById('groupNamePlaceholder').textContent = data.groupName;
+            console.log('Group ID:', groupId);
+        } else {
+            console.error('Error fetching group name:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching group name:', error);
+        console.log('Group ID:', groupId);
+    });
+
+}
 
 // Render expenses and navbar when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus(); // Check authentication status on page load
 
-    initNavbar('Group Name', "A1B2C3"); // @TODO - Replace with group name
+    let groupName = getCookie('groupName');
+    if (groupName === undefined || groupName === null) {
+        // If the group name cookie doesn't exist, fetch it from the server
+        GetGroupName();
+        groupName = getCookie('groupName');
+    }
+
+    initNavbar(groupName, groupName); // @TODO - Replace with group name
     ExpensesArrayModule.populateExpenses();
     renderExpenses();
 
@@ -216,6 +268,11 @@ const ui = {
     confirm: async (message) => createConfirm(message)
 };
 
+function DeleteGroup()
+{
+    
+}
+
 const createConfirm = () => {
     return new Promise((complete) => {
 
@@ -245,15 +302,29 @@ const save = async () => {
     const confirm = await ui.confirm();
 
     if (confirm) {
-        alert('Group Deleted');
-
-        //go back to landingpage
-        window.location.href = "/landingpage";
-
-        //handle log out here @junwei
-
-        //delete group
-        DeleteGroup();
+        // run delete group query here
+    fetch('/query/deleteGroup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ groupID: groupId })
+    }).then(response => {
+        if (response.ok) {
+            console.log('Group deleted successfully');
+            alert('Group Deleted');
+    
+            //go back to landingpage
+            window.location.href = "/landingpage";
+        } else {
+            console.error('Error deleting group:', response.statusText);
+        }
+    })
+    .catch(error => {       
+        console.error('Error deleting group:', error);
+    });
+        
+        
     } else {
     }
 };

@@ -51,6 +51,56 @@ router.post('/getMembers', async (req, res) => {
     }
 });
 
+// get group name from group id
+router.post('/getGroupName', async (req, res) => {
+    try {
+        const { groupID } = req.body;
+
+        // Validate input
+        if (!groupID) {
+            return res.status(400).json({ message: 'Group ID is required' });
+        }
+
+        // Get group name from group ID
+        const [groupResult] = await dbGroup.query(
+            'SELECT * FROM groups_table WHERE id = ?',
+            groupID
+        );
+        
+        if (groupResult.length === 0) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+        
+        return res.status(200).json({ groupName: groupResult[0].group_name });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// delte group
+router.post('/deleteGroup', async (req, res) => {
+    try {
+        const { groupID } = req.body;
+
+        // Validate input
+        if (!groupID) {
+            return res.status(400).json({ message: 'Group ID is required' });
+        }
+
+        // Delete group from groups_table
+        await dbGroup.query('DELETE FROM groups_table WHERE id = ?', [groupID]);
+
+        // Delete members from user_profiles table
+        await dbUsers.query('DELETE FROM user_profiles WHERE group_id = ?', [groupID]);
+
+        res.status(200).json({ message: 'Group deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.post('/createOrUpdateExpense', async (req, res) => {
     try {
       // Destructure and validate request body
