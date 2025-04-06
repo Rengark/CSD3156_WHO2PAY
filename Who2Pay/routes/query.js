@@ -189,7 +189,7 @@ router.post('/getAllTransactions', async (req, res) => {
       const { group_id } = req.body;
   
       // Query to get all transactions
-      const [transactions] = await dbTransactions.query(`
+      const [transactionsResult] = await dbTransactions.query(`
         SELECT 
           transaction_id AS id,
           transaction_name AS name,
@@ -200,17 +200,23 @@ router.post('/getAllTransactions', async (req, res) => {
         ORDER BY transaction_date DESC
       `, group_id ? [group_id] : []);
   
-      res.json(transactions.map(tx => ({
-        ...tx,
-        amount: Number(tx.amount), // Ensure amount is a number
-        date: tx.date.toISOString().split('T')[0] // Format as YYYY-MM-DD
-      })));
+      if (transactionsResult.length === 0) {
+        return res.status(404).json({ message: 'Members not found' });
+        }
+    // parse group results member by member
+    
+    const transactions = transactionsResult.map(tx => ({
+        id: tx.id,
+        name: tx.name,
+        amount: tx.amount,
+        date: tx.date.toISOString().split('T')[0]
+    }));
+   
+    return res.status(200).json({ transactions });;
   
     } catch (error) {
       console.error('Error fetching transactions:', error);
       res.status(500).json({ error: 'Database error' });
-    } finally {
-      conn.release();
     }
   });
 
