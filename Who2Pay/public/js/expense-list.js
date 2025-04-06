@@ -31,31 +31,28 @@ const ExpensesArrayModule = (() => {
     let htmlMappedExpenses = [];
 
     return {
-        populateExpenses: () => { 
+        populateExpenses: async () => { 
             // @TODO Brandon - populate the expensesArray with expenses formatted as
             // { id: int, expenseName: String, amount: int, date: date in YYYY-MM-DD format}
 
             try {
-                const response = fetch('/query/getAllTransactions', {
+                const response = await fetch('/query/getAllTransactions', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(testGroupId ? { group_id: testGroupId } : {})
                 })
-                .then(response => {
-                    if (!response.ok) {
+                if (!response.ok) {
                     throw new Error('Failed to fetch transactions');
                     }
-                    return response.json();
-                })
-                .then(data => {
-                expensesArray = data;
+
+                const data = await response.json();
+
+                for(var i in Object.values(data.transactions))
+                    expensesArray.push(Object.values(data.transactions)[i]);
+
                 console.log('Expenses loaded:', expensesArray);
-                })
-                .catch(error => {
-                    console.error('Error loading expenses:', error);
-                })            
               } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading expenses:', error);
               }
 
             // expensesArray = [
@@ -177,9 +174,9 @@ document.getElementById('navSettings').addEventListener('click', function() {
 
 
 // Render expenses and navbar when the page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     initNavbar('Group Name', "A1B2C3"); // @TODO - Replace with group name
-    ExpensesArrayModule.populateExpenses();
+    await ExpensesArrayModule.populateExpenses();
     renderExpenses();
 
     // add event listener for back button
