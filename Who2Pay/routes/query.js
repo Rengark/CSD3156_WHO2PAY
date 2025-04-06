@@ -137,13 +137,80 @@ router.post('/createOrUpdateExpense', async (req, res) => {
   
       res.status(201).json({
         success: true,
-        //transaction_id,
+        transaction_id,
         message: 'Expense created successfully'
       });
   
     } catch (error) {
       console.error('Error creating expense:', error);
       res.status(500).json({ error: 'Failed to create expense' });
+    }
+  });
+
+// Add to query.js
+router.post('/getTransaction', async (req, res) => {
+    try {
+      const { transaction_id } = req.body;
+  
+      if (!transaction_id) {
+        return res.status(400).json({ error: 'Transaction ID is required' });
+      }
+  
+      // Get transaction
+      const [transaction] = await dbTransactions.query(
+        `SELECT * FROM transactions WHERE transaction_id = ?`,
+        [transaction_id]
+      );
+  
+      if (transaction.length === 0) {
+        return res.status(404).json({ error: 'Transaction not found' });
+      }
+  
+      // Get details
+      const [details] = await dbTransactions.query(
+        `SELECT * FROM transaction_details WHERE transaction_id = ?`,
+        [transaction_id]
+      );
+  
+      res.json({
+        transaction: transaction[0],
+        details
+      });
+  
+    } catch (error) {
+      console.error('Error fetching transaction:', error);
+      res.status(500).json({ error: 'Database error' });
+    }
+  });
+
+// In query.js
+router.post('/getAllTransactions', async (req, res) => {
+    try {
+      const { group_id } = req.body;
+  
+      // Query to get all transactions
+      const [transactions] = await dbTransactions.query(`
+        SELECT 
+          transaction_id AS id,
+          transaction_name AS name,
+          total_amount AS amount,
+          DATE(transaction_date) AS date
+        FROM transactions
+        ${group_id ? 'WHERE group_id = ?' : ''}
+        ORDER BY transaction_date DESC
+      `, group_id ? [group_id] : []);
+  
+      res.json(transactions.map(tx => ({
+        ...tx,
+        amount: Number(tx.amount), // Ensure amount is a number
+        date: tx.date.toISOString().split('T')[0] // Format as YYYY-MM-DD
+      })));
+  
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+      res.status(500).json({ error: 'Database error' });
+    } finally {
+      conn.release();
     }
   });
 

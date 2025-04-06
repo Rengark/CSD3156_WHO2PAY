@@ -22,7 +22,61 @@ const testUserProfiles = [
 {group_id: testGroupId, user_name: "Bjarne Stroustrup"}
 ]
 
+const split_type_enum = {
+	SPLIT_EQUAL: 'Equal Amounts',
+	SPLIT_CUSTOM: 'Custom Amounts'
+}
+
 function populateInitialData() { 
+	try {
+		// Fetch real data from backend
+		const response = fetch('/query/getTransaction', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify({ transaction_id: transactionId })
+		});
+	
+		if (!response.ok) {
+		  throw new Error('Failed to fetch transaction');
+		}
+	
+		const { transaction, details } = response.json();
+	
+		// Populate form fields
+		document.getElementById('expenseName').value = transaction.transaction_name;
+		document.getElementById('subtotal').value = formatAmount(transaction.total_amount);
+		document.getElementById('payeeSplitMethod').value = transaction.split_type_payee;
+		document.getElementById('payerSplitMethod').value = transaction.split_type_payer;
+		document.getElementById('finalTotal').value = formatAmount(transaction.total_amount);
+	
+		// Process payees and payers
+		payeeAmountsPaid.fill(0);
+		payerAmountsToPay.fill(0);
+		payeeCustomAmounts.fill(0);
+	
+		details.forEach(detail => {
+		  if (detail.payer_id === -1) {
+			// This is a payee (recipient)
+			const index = detail.recipient_id;
+			payeeAmountsPaid[index] = detail.amount;
+			payeeCustomAmounts[index] = detail.amount;
+		  } else {
+			// This is a payer
+			const index = detail.payer_id;
+			payerAmountsToPay[index] = detail.amount;
+		  }
+		});
+	
+		// Update UI
+		populatePayees();
+		populatePayers();
+		validateForm();
+	
+	  } catch (error) {
+		console.error('Error loading transaction:', error);
+		alert('Could not load transaction data');
+		// Optionally: window.location.href = 'expenses-list.html';
+	  }
 
 	// Create test transaction data
 	const testTransaction = {
@@ -557,6 +611,13 @@ function saveExpense() {
 	// get form data
 	const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
 
+	const today = new Date();
+	const yyyy = today.getFullYear();
+	const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+	const dd = String(today.getDate()).padStart(2, '0');
+
+	const formattedDate = `${yyyy}-${mm}-${dd}`;
+	console.log("DATE: ", formattedDate); // e.g., 2025-04-06
 
 	// create transaction object for this expense
 	const transactionData = {
@@ -565,7 +626,7 @@ function saveExpense() {
 		split_type_payee: document.getElementById('payeeSplitMethod').value,
 		split_type_payer: document.getElementById('payerSplitMethod').value,
 		total_amount: readAmount(document.getElementById('finalTotal').value) || 0,
-		transaction_date: new Date(),
+		transaction_date: formattedDate,
         last_edited_user: '',
         show_in_list: true, // Default value
         details: []// Array of { payer_id, recipient_id, amount }
@@ -577,7 +638,7 @@ function saveExpense() {
 		// only include payees with amount > 0
 		if(amount > 0) {
 			transactionData.details.push({
-				payer_id: null, // participants don't pay
+				payer_id: -1, // participants don't pay
 				recipient_id: index,
 				amount: amount
 			});
@@ -588,7 +649,7 @@ function saveExpense() {
 		if(amount > 0) {
 			transactionData.details.push({
 				payer_id: index,
-				recipient_id: null,
+				recipient_id: -1,
 				amount: amount
 			})
 		}

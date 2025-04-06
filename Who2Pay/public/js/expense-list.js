@@ -22,6 +22,8 @@ function initNavbar(groupName, groupCode) {
 
 // ---------- EXPENSE LIST ---------- //
 
+const testGroupId = 1;
+
 // sample
 const ExpensesArrayModule = (() => {
     let expensesArray = [];
@@ -33,16 +35,34 @@ const ExpensesArrayModule = (() => {
             // @TODO Brandon - populate the expensesArray with expenses formatted as
             // { id: int, expenseName: String, amount: int, date: date in YYYY-MM-DD format}
 
-            expensesArray = [
-                { id: 69, name: "Expense 1", amount: 2000, date: "2025-03-01" },
-                { id: 420, name: "Expense 2", amount: 1050, date: "2025-02-08" },
-                { id: 333, name: "Expense 3", amount: 999, date: "2025-04-01" },
-                { id: 123, name: "Expense 4", amount: 888, date: "2025-05-06" },
-                { id: 23, name: "Expense 5", amount: 333, date: "2025-03-29" },
-                { id: 14, name: "Expense 6", amount: 40, date: "2025-02-28" },
-                { id: 72, name: "Expense 7", amount: 500, date: "2025-03-28" },
-                { id: 68, name: "Expense 8", amount: 2750, date: "2025-01-28" }
-            ];
+            try {
+                const response = fetch('/query/getAllTransactions', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(testGroupId ? { group_id: testGroupId } : {})
+                });
+            
+                if (!response.ok) {
+                  throw new Error('Failed to fetch transactions');
+                }
+            
+                expensesArray = response.json();
+                console.log('Expenses loaded:', expensesArray);
+            
+              } catch (error) {
+                console.error('Error loading expenses:', error);
+              }
+
+            // expensesArray = [
+            //     { id: 69, name: "Expense 1", amount: 2000, date: "2025-03-01" },
+            //     { id: 420, name: "Expense 2", amount: 1050, date: "2025-02-08" },
+            //     { id: 333, name: "Expense 3", amount: 999, date: "2025-04-01" },
+            //     { id: 123, name: "Expense 4", amount: 888, date: "2025-05-06" },
+            //     { id: 23, name: "Expense 5", amount: 333, date: "2025-03-29" },
+            //     { id: 14, name: "Expense 6", amount: 40, date: "2025-02-28" },
+            //     { id: 72, name: "Expense 7", amount: 500, date: "2025-03-28" },
+            //     { id: 68, name: "Expense 8", amount: 2750, date: "2025-01-28" }
+            // ];
         },
         getExpenses: () => [...expensesArray], // Return a copy to prevent direct modification
         addHtmlMapping: (item) => htmlMappedExpenses.push(item),

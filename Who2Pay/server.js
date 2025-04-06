@@ -48,7 +48,7 @@ app.use('/query', require('./routes/query')); // Assuming you have a query route
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
+  res.sendFile(path.join(__dirname, 'public', 'expense-list.html'));
 });
 
 // Protected route example
