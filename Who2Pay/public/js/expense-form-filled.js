@@ -2,18 +2,18 @@
 
 // transaction info
 const testGroupId = 1;
-const testTransactionName = "Movies";
-const testPayeeSplitMethod = 'Custom Amounts';
+const testTransactionName = "Expense 1";
+const testPayeeSplitMethod = 'Equal Amounts';
 const testPayerSplitMethod = 'Equal Amounts';
-const testFinalTotal = 5600;
+const testFinalTotal = 1200;
 
 // Sample list of people
 const people = ["Jane", "John", "James", "Jess"];
 
-const payeeAmountsPaid = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts paid by each payee
-const payerAmountsToPay = [0.00, 0.00, 0.00, 0.00]; // Array to hold amounts to be paid by each payer
+const payeeAmountsPaid = [12.00, 0.00, 0.00, 0.00]; // Array to hold amounts paid by each payee
+const payerAmountsToPay = [3.00, 3.00, 3.00, 3.00]; // Array to hold amounts to be paid by each payer
 
-let payeeCustomAmounts = [0.00, 0.00, 0.00, 0.00]; // Array to hold custom amount paid input by user
+let payeeCustomAmounts = [3.00, 3.00, 3.00, 3.00]; // Array to hold custom amount paid input by user
 
 const testUserProfiles = [
 {group_id: testGroupId, user_name: "Jane"},
