@@ -556,37 +556,37 @@ function saveExpense() {
 	console.log("saveExpense called. payee amounts: ", payeeAmountsPaid, " payer amounts: ", payerAmountsToPay);
 	// get form data
 	const finalTotal = readAmount(document.getElementById('finalTotal').value) || 0;
-	const payeeSplitMethod = document.getElementById('payeeSplitMethod').value;
-	const payerSplitMethod = document.getElementById('payerSplitMethod').value;
-
 
 
 	// create transaction object for this expense
 	const transactionData = {
-		transaction_name: testTransactionName,
+		transaction_name: document.getElementById('expenseName').value,
 		group_id: testGroupId,
-		payee_split_type: payeeSplitMethod,
-		payer_split_type: payerSplitMethod,
-		total_amount: finalTotal
+		split_type_payee: document.getElementById('payeeSplitMethod').value,
+		split_type_payer: document.getElementById('payerSplitMethod').value,
+		total_amount: readAmount(document.getElementById('finalTotal').value) || 0,
+		transaction_date: new Date(),
+        last_edited_user: '',
+        show_in_list: true, // Default value
+        details: []// Array of { payer_id, recipient_id, amount }
 	}
 
 	// create transactionDetails
-	const transactionDetails = [];
 
 	payeeAmountsPaid.forEach((amount, index) => {
 		// only include payees with amount > 0
 		if(amount > 0) {
-			transactionDetails.push({
+			transactionData.details.push({
 				payer_id: null, // participants don't pay
 				recipient_id: index,
 				amount: amount
 			});
 		}
-	});
+	});	  
 
 	payerAmountsToPay.forEach((amount, index) => {
 		if(amount > 0) {
-			transactionDetails.push({
+			transactionData.details.push({
 				payer_id: index,
 				recipient_id: null,
 				amount: amount
@@ -594,9 +594,37 @@ function saveExpense() {
 		}
 	});
 
+	try{
+		fetch('/query/createOrUpdateExpense', {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(transactionData)
+		  })
+			.then(response => {
+			  if (!response.ok) {
+				throw new Error('Network response was not ok');
+			  }
+			  return response.json();
+			})
+			.then(data => {
+			  console.log('Success:', data);
+			  alert(`Expense created with ID: ${data.transaction_id}`);
+			})
+			.catch(error => {
+			  console.error('Error:', error);
+			  alert('Failed to create expense');
+			});
+	}
+	catch (error) {
+        console.error('Error:', error);
+    }
+
+	
+
 	console.log("Transaction data to be saved:", {
-		transactionData: transactionData,
-		transactionDetails: transactionDetails
+		transactionData: transactionData
 	})
 }
 
