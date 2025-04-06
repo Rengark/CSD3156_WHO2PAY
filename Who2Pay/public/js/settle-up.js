@@ -2,24 +2,44 @@ let groupId = null;
 let authToken = null;
 let password_enforced = null;
 
+const groupId = document.cookie.split('; ').forEach(cookie => {
+    const [name, value] = cookie.split('=');
+    if (name === 'groupId') 
+    {
+        return value;
+    }
+});
+
 const MembersArrayModule = (() => {
     let membersArray = [];
 
     return {
-        populateMemberList: () => { 
-            // @TODO Brandon - populate the expensesArray with expenses formatted as
-            // { id: int, expenseName: String, amount: int, date: date in YYYY-MM-DD format}
+        populateMemberList: async (groupId) => { 
+            try {
+                const response = await fetch('/query/getMembers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ groupID: groupId })
+                });
 
-            membersArray = [
-                { id: 69,  name: "name1" },
-                { id: 420, name: "name2" },
-                { id: 333, name: "name3" },
-                { id: 123, name: "name4" },
-                { id: 23,  name: "name5" },
-                { id: 14,  name: "name6" },
-                { id: 72,  name: "name7" },
-                { id: 68,  name: "name8" }
-            ];
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Transform to match your format
+                membersArray = data.members.map(member => ({
+                    id: member.id,
+                    name: member.name
+                }));
+
+                console.log('Members loaded:', membersArray);
+                return membersArray;
+
+            } catch (error) {
+                console.error('Error loading members:', error);
+            }
         },
         getMembers: () => [...membersArray], // Return a copy to prevent direct modification
         getCount: () => membersArray.length // Return a copy to prevent direct modification
