@@ -262,3 +262,4 @@ const save = async () => {
 const deleteButton = document.getElementById('deleteGroup');
 if (deleteButton) {
     deleteButton.addEventListener('pointerdown', save);
+}
