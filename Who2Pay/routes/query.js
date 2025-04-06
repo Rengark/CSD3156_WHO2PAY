@@ -201,7 +201,7 @@ router.post('/getAllTransactions', async (req, res) => {
       `, group_id ? [group_id] : []);
   
       if (transactionsResult.length === 0) {
-        return res.status(404).json({ message: 'Members not found' });
+        return res.status(404).json({ message: 'Transactions not found' });
         }
     // parse group results member by member
     

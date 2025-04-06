@@ -40,17 +40,22 @@ const ExpensesArrayModule = (() => {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(testGroupId ? { group_id: testGroupId } : {})
-                });
-            
-                if (!response.ok) {
-                  throw new Error('Failed to fetch transactions');
-                }
-            
-                expensesArray = response.json();
+                })
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Failed to fetch transactions');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                expensesArray = data;
                 console.log('Expenses loaded:', expensesArray);
-            
+                })
+                .catch(error => {
+                    console.error('Error loading expenses:', error);
+                })            
               } catch (error) {
-                console.error('Error loading expenses:', error);
+                console.error('Error:', error);
               }
 
             // expensesArray = [
