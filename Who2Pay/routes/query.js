@@ -116,9 +116,9 @@ router.post('/createOrUpdateExpense', async (req, res) => {
       ]
     );
       const transaction_id = txResult.insertId;
-        console.log("transaction data ", transaction_id, detail.playerid, detail.recipient_id, detail.amount);
       // 2. Insert transaction details
       for (const detail of details) {
+
         await dbTransactions.query(
           `INSERT INTO transaction_details (
             transaction_id,
@@ -128,8 +128,8 @@ router.post('/createOrUpdateExpense', async (req, res) => {
           ) VALUES (?, ?, ?, ?)`,
           [
             transaction_id,
-            detail.payer_id,
-            detail.recipient_id,
+            detail.payer_id === null ? -1 : parseInt(detail.payer_id,10),
+            detail.recipient_id === null ? -1 : parseInt(detail.recipient_id,10),
             detail.amount
           ]
         );
