@@ -57,3 +57,22 @@ function copyToClipboard(text) {
             console.error('Could not copy text: ', err);
         });
 }
+
+document.addEventListener('DOMContentLoaded', function()  {
+
+    // logout button
+    const logoutButton = document.getElementById('logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function() {
+            // Perform logout action here, e.g., redirect to landing page and clear cookies
+            console.log('Logout button clicked');
+            // Redirect to landing page
+            window.location.href = '/landingpage';
+            // Clear cookies (if needed)
+            document.cookie.split(";").forEach(function(cookie) {
+                const name = cookie.split("=")[0].trim();
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+            });
+        });
+    }
+});
