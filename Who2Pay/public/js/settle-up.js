@@ -1,3 +1,6 @@
+let groupId = null;
+let authToken = null;
+let password_enforced = null;
 
 const MembersArrayModule = (() => {
     let membersArray = [];
@@ -141,11 +144,49 @@ document.getElementById('submit').addEventListener('click', function() {
     
     const numericalAmount = readAmount(amount);
     console.log(`${personA} paid ${personB} $${amount} (${numericalAmount} cents)` );
+    
 });
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus(); // Check authentication status on page load
+    
     MembersArrayModule.populateMemberList();
     populateMemberDropdowns();
     initializeSettlement('name1', 'name2', '300');
+
+    async function checkAuthStatus() {
+        try {
+            // Check if cookies are set
+            document.cookie.split('; ').forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'groupId') 
+                {
+                    groupId = value;
+                } else if (name === 'authToken') {
+                    authToken = value;
+                } else if (name === 'password_enforced') {
+                    password_enforced = Boolean(parseInt(value, 10));
+                }
+            });
+            // Check if the user is authenticated
+            if (groupId && authToken) {
+                // User is authenticated, proceed to member login
+                // can stay on page
+            } else {
+                // User is not authenticated, show error message or redirect to login page
+                console.log('User is not authenticated');
+                console.log(groupId? groupId : "No group ID found in cookies");
+                console.log(authToken? authToken : "No auth token found in cookies");
+                console.log(document.cookie);
+                // Redirect to landing page
+                window.location.href = '/landingpage'; // Uncomment this line to redirect to login page
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Error checking authentication status:', error);
+        }
+    }
+
 });

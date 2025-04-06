@@ -1,3 +1,7 @@
+let groupId = null;
+let authToken = null;
+let password_enforced = null;
+
 // ---------- NAVBAR ---------- //
 
 // This function initializes the navbar with the group name
@@ -153,6 +157,8 @@ document.getElementById('navSettings').addEventListener('click', function() {
 
 // Render expenses and navbar when the page loads
 document.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus(); // Check authentication status on page load
+
     initNavbar('Group Name', "A1B2C3"); // @TODO - Replace with group name
     ExpensesArrayModule.populateExpenses();
     renderExpenses();
@@ -169,4 +175,38 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('navSettings').addEventListener('click', function() {
         window.location.href = '/group-edit.html'; // Redirect to the landing page
     });
+
+    async function checkAuthStatus() {
+        try {
+            // Check if cookies are set
+            document.cookie.split('; ').forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'groupId') 
+                {
+                    groupId = value;
+                } else if (name === 'authToken') {
+                    authToken = value;
+                } else if (name === 'password_enforced') {
+                    password_enforced = Boolean(parseInt(value, 10));
+                }
+            });
+            // Check if the user is authenticated
+            if (groupId && authToken) {
+                // User is authenticated, proceed to member login
+                // can stay on page
+            } else {
+                // User is not authenticated, show error message or redirect to login page
+                console.log('User is not authenticated');
+                console.log(groupId? groupId : "No group ID found in cookies");
+                console.log(authToken? authToken : "No auth token found in cookies");
+                console.log(document.cookie);
+                // Redirect to landing page
+                window.location.href = '/landingpage'; // Uncomment this line to redirect to login page
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Error checking authentication status:', error);
+        }
+    }
 });

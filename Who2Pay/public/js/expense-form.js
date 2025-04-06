@@ -1,5 +1,7 @@
 //const { format } = require("../../config/db");
-
+let groupId = null;
+let authToken = null;
+let password_enforced = null;
 // transaction info
 const testGroupId = 1;
 const testTransactionName = "Movies";
@@ -662,6 +664,8 @@ document.getElementById('return').addEventListener('pointerdown', backButtonPres
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
+	checkAuthStatus();
+	
 	// add event listener for back button
     document.getElementById('return').addEventListener('click', function() {
         window.location.href = '/expense-list'; // Redirect to the landing page
@@ -679,4 +683,39 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	calculateTotal();
 	validateForm();
+
+
+	async function checkAuthStatus() {
+        try {
+            // Check if cookies are set
+            document.cookie.split('; ').forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'groupId') 
+                {
+                    groupId = value;
+                } else if (name === 'authToken') {
+                    authToken = value;
+                } else if (name === 'password_enforced') {
+                    password_enforced = Boolean(parseInt(value, 10));
+                }
+            });
+            // Check if the user is authenticated
+            if (groupId && authToken) {
+                // User is authenticated, proceed to member login
+                // can stay on page
+            } else {
+                // User is not authenticated, show error message or redirect to login page
+                console.log('User is not authenticated');
+                console.log(groupId? groupId : "No group ID found in cookies");
+                console.log(authToken? authToken : "No auth token found in cookies");
+                console.log(document.cookie);
+                // Redirect to landing page
+                window.location.href = '/landingpage'; // Uncomment this line to redirect to login page
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Error checking authentication status:', error);
+        }
+    }
 });
