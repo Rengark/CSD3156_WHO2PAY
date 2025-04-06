@@ -8,14 +8,10 @@ const MembersArrayModule = (() => {
             // { id: int, expenseName: String, amount: int, date: date in YYYY-MM-DD format}
 
             membersArray = [
-                { id: 69,  name: "name1" },
-                { id: 420, name: "name2" },
-                { id: 333, name: "name3" },
-                { id: 123, name: "name4" },
-                { id: 23,  name: "name5" },
-                { id: 14,  name: "name6" },
-                { id: 72,  name: "name7" },
-                { id: 68,  name: "name8" }
+                { id: 123,  name: "Jane" },
+                { id: 124, name: "John" },
+                { id: 125, name: "James" },
+                { id: 126, name: "Jess" }
             ];
         },
         getMembers: () => [...membersArray], // Return a copy to prevent direct modification
@@ -147,5 +143,5 @@ document.getElementById('submit').addEventListener('click', function() {
 document.addEventListener('DOMContentLoaded', function() {
     MembersArrayModule.populateMemberList();
     populateMemberDropdowns();
-    initializeSettlement('name1', 'name2', '300');
+    initializeSettlement('James', 'John', 800);
 });

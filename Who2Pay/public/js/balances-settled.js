@@ -11,7 +11,7 @@ function getBalanceSummary() {
     // Amounts are stored as integers (cents) to avoid floating point issues
     const balances = [
         { id: 1111, name: "Jane", amount: -400 },
-        { id: 3333, name: "James", amount: 800 },
+        { id: 3333, name: "James", amount: 0 },
         { id: 4444, name: "Jess", amount: 0 }
     ];
 

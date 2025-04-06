@@ -48,7 +48,7 @@ app.use('/query', require('./routes/query')); // Assuming you have a query route
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
+  res.sendFile(path.join(__dirname, 'public', 'populated-expense-list.html'));
 });
 
 // Protected route example
@@ -86,5 +86,23 @@ app.get('/member-login', (req, res) => {
 //load expense-list.html
 app.get('/expense-list', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'expense-list.html'));
+}
+);
+
+//load expense-list.html
+app.get('/populated-expense-list', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'populated-expense-list.html'));
+}
+);
+
+//load expense-list.html
+app.get('/populated-expense-list-updated', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'populated-expense-list-updated.html'));
+}
+);
+
+//load expense-list.html
+app.get('/populated-expense-list-updated-new', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'populated-expense-list-updated-new.html'));
 }
 );

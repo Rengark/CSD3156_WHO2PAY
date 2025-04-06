@@ -1,3 +1,7 @@
+let groupId = null;
+let authToken = null;
+let password_enforced = null;
+
 // ---------- NAVBAR ---------- //
 
 // This function initializes the navbar with the group name
@@ -29,20 +33,11 @@ const ExpensesArrayModule = (() => {
     let htmlMappedExpenses = [];
 
     return {
-        populateExpenses: () => { 
+        populateExpenses: (arr) => { 
             // @TODO Brandon - populate the expensesArray with expenses formatted as
             // { id: int, expenseName: String, amount: int, date: date in YYYY-MM-DD format}
 
-            expensesArray = [
-                { id: 69, name: "Expense 1", amount: 2000, date: "2025-03-01" },
-                { id: 420, name: "Expense 2", amount: 1050, date: "2025-02-08" },
-                { id: 333, name: "Expense 3", amount: 999, date: "2025-04-01" },
-                { id: 123, name: "Expense 4", amount: 888, date: "2025-05-06" },
-                { id: 23, name: "Expense 5", amount: 333, date: "2025-03-29" },
-                { id: 14, name: "Expense 6", amount: 40, date: "2025-02-28" },
-                { id: 72, name: "Expense 7", amount: 500, date: "2025-03-28" },
-                { id: 68, name: "Expense 8", amount: 2750, date: "2025-01-28" }
-            ];
+            expensesArray = arr;
         },
         getExpenses: () => [...expensesArray], // Return a copy to prevent direct modification
         addHtmlMapping: (item) => htmlMappedExpenses.push(item),
@@ -145,16 +140,18 @@ document.getElementById('navBalances').addEventListener('click', function() {
 });
 
 
-document.getElementById('navSettings').addEventListener('click', function() {
-    console.log('Settings button clicked');
-    // Add your logic to handle settling up
-});
+// document.getElementById('navSettings').addEventListener('click', function() {
+//     console.log('Settings button clicked');
+//     // Add your logic to handle settling up
+// });
 
 
 // Render expenses and navbar when the page loads
 document.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus(); // Check authentication status on page load
+
     initNavbar('Group Name', "A1B2C3"); // @TODO - Replace with group name
-    ExpensesArrayModule.populateExpenses();
+    ExpensesArrayModule.populateExpenses([]);
     renderExpenses();
 
     // add event listener for back button
@@ -166,7 +163,94 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/settle-up.html'; // Redirect to the landing page
     });
     
-    document.getElementById('navSettings').addEventListener('click', function() {
-        window.location.href = '/group-edit.html'; // Redirect to the landing page
-    });
+    // document.getElementById('navSettings').addEventListener('click', function() {
+    //     window.location.href = '/group-edit.html'; // Redirect to the landing page
+    // });
+
+    async function checkAuthStatus() {
+        try {
+            // Check if cookies are set
+            document.cookie.split('; ').forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'groupId') 
+                {
+                    groupId = value;
+                } else if (name === 'authToken') {
+                    authToken = value;
+                } else if (name === 'password_enforced') {
+                    password_enforced = Boolean(parseInt(value, 10));
+                }
+            });
+            // Check if the user is authenticated
+            if (groupId && authToken) {
+                // User is authenticated, proceed to member login
+                // can stay on page
+            } else {
+                // User is not authenticated, show error message or redirect to login page
+                console.log('User is not authenticated');
+                console.log(groupId? groupId : "No group ID found in cookies");
+                console.log(authToken? authToken : "No auth token found in cookies");
+                console.log(document.cookie);
+                // Redirect to landing page
+                window.location.href = '/landingpage'; // Uncomment this line to redirect to login page
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Error checking authentication status:', error);
+        }
+    }
 });
+
+const ui = {
+    confirm: async (message) => createConfirm(message)
+};
+
+const createConfirm = () => {
+    return new Promise((complete) => {
+
+        
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        const confirmBox = document.querySelector('.confirm');
+        
+        confirmYes.replaceWith(confirmYes.cloneNode(true));
+        confirmNo.replaceWith(confirmNo.cloneNode(true));
+        
+        document.getElementById('confirmYes').addEventListener('click', () => {
+            confirmBox.style.display = 'none';
+            complete(true);
+        });
+        
+        document.getElementById('confirmNo').addEventListener('click', () => {
+            confirmBox.style.display = 'none';
+            complete(false);
+        });
+        
+        confirmBox.style.display = 'block';
+    });
+};
+
+const save = async () => {
+    const confirm = await ui.confirm();
+    
+    if (confirm) {
+        alert('Group Deleted');
+
+        //go back to landingpage
+        window.location.href = "/landingpage";
+
+        //handle log out here @junwei
+
+        //delete group
+        DeleteGroup();
+    } else {
+    }
+};
+
+
+  
+const deleteButton = document.getElementById('deleteGroup');
+if (deleteButton) {
+    deleteButton.addEventListener('pointerdown', save);
+}

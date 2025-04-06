@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Creation Form</title>
+    <link rel="stylesheet" href="/css/style-general.css">
+    <link rel="stylesheet" href="/css/style-expense.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="button-left-right-container">
+            <button id="return" class="light-green">Back</button>
+            <button id="submit" class="dark-green" disabled>Save</button>
+        </div>
+        
+        <form id="expense-form">
+            <div>
+                <h2 class="expense-header">Expense Name: <input type="text" id="expenseName" class="expense-name" placeholder="Expense name here..."></h2>
+                <div id="lastEdit" class="info-text" style="font-style: italic;"></div>
+            </div>
+            
+            <div class="expense-calc">
+                <div class="calc-group">
+                    <div class="calc-label">Subtotal</div>
+                    <div class="input-group">
+                        <span class="currency">$</span>
+                        <input type="text" id="subtotal" class="calc-input" value="0.00">
+                    </div>
+                </div>
+                
+                <span class="operator">+</span>
+                
+                <div class="calc-group">
+                    <div class="calc-label">Additional Charge</div>
+                    <div class="input-group">
+                        <span class="currency">$</span>
+                        <input type="text" id="additionalCharge" class="calc-input" value="0.00">
+                    </div>
+                </div>
+                
+                <span class="operator">=</span>
+                
+                <div class="calc-group">
+                    <div class="calc-label">Final Total</div>
+                    <div class="input-group">
+                        <span class="currency">$</span>
+                        <input type="text" id="finalTotal" class="calc-input" value="0.00" readonly>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sections">
+                <div class="section">
+                    <h3 class="section-title">Payees</h3>
+                    <div class="split-method">
+                        <label>Split Method</label>
+                        <select id="payeeSplitMethod">
+                            <option selected>Custom Amounts</option>
+                            <option>Equal Amounts</option>
+                        </select>
+                    </div>
+                    <div id="payeeErrorMessage" class="error-message">Amounts do not match expense total.</div>
+                    <div id="payeeNoSelectionMessage" class="error-message">No payees were selected.</div>
+                    
+                    <div class="people-list" id="payeesList">
+                        <!-- Payees will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">Payers</h3>
+                    <div class="split-method">
+                        <label>Split Method</label>
+                        <select id="payerSplitMethod">
+                            <option>Equal Amounts</option>
+                            <option selected>Custom Amounts</option>
+                        </select>
+                    </div>
+                    <div id="payerErrorMessage" class="error-message">Amounts do not match expense total.</div>
+                    <div id="payerNoSelectionMessage" class="error-message">No payers were selected.</div>
+                    
+                    <div class="people-list" id="payersList">
+                        <!-- Payers will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script src="/js/utility.js"></script>
+    <script src="/js/expense-form.js"></script>
+</body>
+</html>
