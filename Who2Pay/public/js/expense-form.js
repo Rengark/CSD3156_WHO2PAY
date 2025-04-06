@@ -22,6 +22,8 @@ const testUserProfiles = [
 {group_id: testGroupId, user_name: "Bjarne Stroustrup"}
 ]
 
+let userProfiles = []; // This will store fetched user data
+
 const split_type_enum = {
 	SPLIT_EQUAL: 'Equal Amounts',
 	SPLIT_CUSTOM: 'Custom Amounts'
@@ -394,14 +396,50 @@ function updatePayerAmounts() {
 	validateForm();
 }
 
+async function fetchUserProfiles(groupId) {
+	try {
+	  const response = await fetch('/query/getMembers', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ groupID: groupId })
+	  });
+  
+	  if (!response.ok) throw new Error('Failed to fetch members');
+	  
+	  const data = await response.json();
+	  userProfiles = data.members.map(member => ({
+		group_id: groupId,
+		user_name: member.name,
+		id: member.id
+	  }));
+	  
+	  return userProfiles;
+	} catch (error) {
+	  console.error('Error fetching members:', error);
+	  // Fallback to test data
+	  userProfiles = [
+		{group_id: testGroupId, user_name: "John Doe", id: 1},
+		{group_id: testGroupId, user_name: "Mary Jane", id: 2},
+		{group_id: testGroupId, user_name: "Gary Stu", id: 3},
+		{group_id: testGroupId, user_name: "Bjarne Stroustrup", id: 4}
+	  ];
+	  return userProfiles;
+	}
+  }
+
 // Function to populate payees
-function populatePayees() {
+async function populatePayees() {
 	const payeesList = document.getElementById('payeesList');
 	payeesList.innerHTML = '';
 	
 	const splitMethod = document.getElementById('payeeSplitMethod').value;
 	
-	testUserProfiles.forEach((testUserProfiles, index) => {
+	// Ensure userProfiles is populated
+	if (userProfiles.length === 0) {
+		await fetchUserProfiles(testGroupId);
+	}
+
+	userProfiles.forEach((testUserProfiles, index) => {
 		const row = document.createElement('div');
 		row.className = 'person-row';
 		
@@ -512,13 +550,18 @@ function populatePayees() {
 }
 
 // Function to populate payers
-function populatePayers() {
+async function populatePayers() {
 	const payersList = document.getElementById('payersList');
 	payersList.innerHTML = '';
 	
 	const splitMethod = document.getElementById('payerSplitMethod').value;
 	
-	testUserProfiles.forEach((testUserProfiles, index) => {
+	// Ensure userProfiles is populated
+	if (userProfiles.length === 0) {
+		await fetchUserProfiles(testGroupId);
+	}
+
+	userProfiles.forEach((testUserProfiles, index) => {
 		const row = document.createElement('div');
 		row.className = 'person-row';
 		
@@ -639,7 +682,7 @@ function saveExpense() {
 		if(amount > 0) {
 			transactionData.details.push({
 				payer_id: -1, // participants don't pay
-				recipient_id: index,
+				recipient_id: userProfiles[index].id,
 				amount: amount
 			});
 		}
@@ -648,7 +691,7 @@ function saveExpense() {
 	payerAmountsToPay.forEach((amount, index) => {
 		if(amount > 0) {
 			transactionData.details.push({
-				payer_id: index,
+				payer_id: userProfiles[index].id,
 				recipient_id: -1,
 				amount: amount
 			})
