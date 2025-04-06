@@ -8,6 +8,8 @@ require('dotenv').config();
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const createGroupRoutes = require('./routes/createGroup');
+
 
 // Initialize app
 const app = express();
@@ -41,10 +43,12 @@ require('./config/passport');
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/createGroup', createGroupRoutes);
+app.use('/query', require('./routes/query')); // Assuming you have a query route
 
 // Route to serve the login page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'expense-create.html'));
+  res.sendFile(path.join(__dirname, 'public', 'landingpage.html'));
 });
 
 // Protected route example

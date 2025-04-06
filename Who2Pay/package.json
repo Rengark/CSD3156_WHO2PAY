@@ -2,15 +2,16 @@
   "name": "who2pay",
   "version": "1.0.0",
   "description": "Base Project for Who2Pay",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
-    "start": "",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bootstrap2": "^2.3.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
