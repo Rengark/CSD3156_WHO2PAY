@@ -212,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const ui = {
+
     confirm: async (message) => createConfirm(message)
 };
 
@@ -242,6 +243,7 @@ const createConfirm = () => {
 
 const save = async () => {
     const confirm = await ui.confirm();
+    console.log('delete button clicked');
     
     if (confirm) {
         alert('Group Deleted');
