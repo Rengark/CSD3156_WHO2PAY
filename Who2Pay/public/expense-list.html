@@ -26,8 +26,8 @@
                         <span class="material-icons">content_copy</span>
                     </button>
                 </div>
-                <button type="navSettings" id="navSettings" class="light-green square-btn">
-                    <span class="material-icons">settings</span>
+                <button type="navDelete" id="navDelete" class="dark-red square-btn">
+                    <span class="material-icons">delete</span>
                 </button>
             </div>
         </div>
@@ -42,6 +42,18 @@
             <!-- Expenses will be populated here by JavaScript -->
         </div>
     </div>
+
+    <div class="confirm">
+        <div></div>
+        <div class = "test">
+          <div id="confirmMessage">Are you sure you want to delete the group?</div>
+            <p id="confirmWarning">This action cannot be undone.</p>
+          <div>
+            <input id="confirmYes" type="button" value="Yes" class="dark-red"/>
+            <input id="confirmNo" type="button" value="No" class="light-green" />
+          </div>
+        </div>
+      </div>
     
     <script src="/js/utility.js"></script>
     <script src="/js/expense-list.js"></script>
