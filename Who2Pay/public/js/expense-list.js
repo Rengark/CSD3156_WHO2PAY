@@ -243,8 +243,7 @@ const createConfirm = () => {
 
 const save = async () => {
     const confirm = await ui.confirm();
-    console.log('delete button clicked');
-    
+
     if (confirm) {
         alert('Group Deleted');
 
@@ -261,7 +260,7 @@ const save = async () => {
 
 
   
-const deleteButton = document.getElementById('deleteGroup');
+const deleteButton = document.getElementById('navDelete');
 if (deleteButton) {
     deleteButton.addEventListener('pointerdown', save);
 }
