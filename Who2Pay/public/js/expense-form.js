@@ -662,7 +662,11 @@ document.getElementById('return').addEventListener('pointerdown', backButtonPres
 
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
-	
+	// add event listener for back button
+    document.getElementById('return').addEventListener('click', function() {
+        window.location.href = '/expense-list'; // Redirect to the landing page
+    });
+
 	// Check if in edit mode
 	const urlParams = new URLSearchParams(window.location.search);
 	const isEditMode = urlParams.has('transaction_id');

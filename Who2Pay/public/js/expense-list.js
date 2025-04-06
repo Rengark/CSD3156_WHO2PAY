@@ -156,4 +156,17 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavbar('Group Name', "A1B2C3"); // @TODO - Replace with group name
     ExpensesArrayModule.populateExpenses();
     renderExpenses();
+
+    // add event listener for back button
+    document.getElementById('navExpenseCreation').addEventListener('click', function() {
+        window.location.href = '/expense-create.html'; // Redirect to the landing page
+    });
+
+    document.getElementById('navBalances').addEventListener('click', function() {
+        window.location.href = '/settle-up.html'; // Redirect to the landing page
+    });
+    
+    document.getElementById('navSettings').addEventListener('click', function() {
+        window.location.href = '/group-edit.html'; // Redirect to the landing page
+    });
 });

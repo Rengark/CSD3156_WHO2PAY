@@ -117,9 +117,11 @@ document.getElementById('amount').addEventListener('input', function(e) {
 
 
 // Button event listeners
-document.getElementById('return').addEventListener('click', function() {
+document.getElementById('return').addEventListener('click', function(e) {
+    e.preventDefault();
     // Handle back button click (e.g., navigate back or cancel)
     console.log('Back button clicked');
+    window.location.href = "/expense-list.html"; // Change to the appropriate URL
 });
 
 document.getElementById('submit').addEventListener('click', function() {
