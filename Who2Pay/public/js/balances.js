@@ -5,7 +5,7 @@
 // If the amount is negative, the user owes that person money.
 // If the amount is positive, the user is owed money 
 function getBalanceSummary() {
-
+    
     return fetch('/query/getUserBalances', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,7 +29,13 @@ function getBalanceSummary() {
 
 // ID of the user currently logged in
 // temp variable for testing
-let currentUserId = 9999;
+const currentUserId = document.cookie.split('; ').forEach(cookie => {
+    const [name, value] = cookie.split('=');
+    if (name === 'userId') 
+    {
+        return value;
+    }
+});
 
 // Function to populate the balances list
 function renderBalances(balances) {

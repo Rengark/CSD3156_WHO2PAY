@@ -22,7 +22,13 @@ function initNavbar(groupName, groupCode) {
 
 // ---------- EXPENSE LIST ---------- //
 
-const testGroupId = 1;
+const groupId = document.cookie.split('; ').forEach(cookie => {
+    const [name, value] = cookie.split('=');
+    if (name === 'groupId') 
+    {
+        return value;
+    }
+});
 
 // sample
 const ExpensesArrayModule = (() => {
@@ -39,7 +45,7 @@ const ExpensesArrayModule = (() => {
                 const response = await fetch('/query/getAllTransactions', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(testGroupId ? { group_id: testGroupId } : {})
+                  body: JSON.stringify(groupId ? { group_id: groupId } : {})
                 })
                 if (!response.ok) {
                     throw new Error('Failed to fetch transactions');
