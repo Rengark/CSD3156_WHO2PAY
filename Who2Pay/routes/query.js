@@ -75,36 +75,48 @@ router.post('/createOrUpdateExpense', async (req, res) => {
         last_edited_user,
         show_in_list, // Default value
         details});
+
+        let stpee = null;
+        let stppr = null;
+        if (split_type_payee === 'Equal Amounts')
+        {
+          stpee = 'SPLIT_EQUAL';
+        }
+        else {
+          stpee = 'SPLIT_VALUE';
+        }
+        if (split_type_payer === 'Equal Amounts')
+        {
+            stppr = 'SPLIT_EQUAL';
+        }
+        else {
+            stppr = 'SPLIT_VALUE';
+        }
       // Validate required fields
       if (!transaction_name || !group_id || !total_amount || !details) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
-  
+      
       // 1. Insert into transactions table
-      const [txResult] = await dbTransactions.query(
-        `INSERT INTO transactions (
-          transaction_name,
-          group_id,
-          split_type_payee,
-          split_type_payer,
-          total_amount,
-          transaction_date,
-          last_edited_user,
-          show_in_list
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          transaction_name,
-          group_id,
-          split_type_payee,
-          split_type_payer,
-          total_amount,
-          transaction_date || new Date(), // Use current date if not provided
-          last_edited_user,
-          show_in_list
-        ]
-      );
+    const mysqlFormattedDate = transaction_date 
+      ? new Date(transaction_date).toISOString().slice(0, 19).replace('T', ' ') 
+      : new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    const [txResult] = await dbTransactions.query(
+      `INSERT INTO transactions (transaction_name, group_id, split_type_payee, split_type_payer, total_amount, transaction_date, last_edited_user, show_in_list) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        transaction_name,
+        group_id,
+        stpee,
+        stppr,
+        total_amount,
+        mysqlFormattedDate, // Use MySQL formatted date
+        last_edited_user === '' ? -1 : parseInt(last_edited_user,10),
+        show_in_list
+      ]
+    );
       const transaction_id = txResult.insertId;
-  
+        console.log("transaction data ", transaction_id, detail.playerid, detail.recipient_id, detail.amount);
       // 2. Insert transaction details
       for (const detail of details) {
         await dbTransactions.query(
